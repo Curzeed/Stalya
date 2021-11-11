@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/styleRegister.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+{% endblock %}
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+    <div class="container">
+        <h1>S'enregistrer</h1>
+
+        {{ form_start(registrationForm) }}
+        <label for="username" id="username">Pseudo : </label>{{ form_widget(registrationForm.username) }} <br>
+        <label for="email">E-Mail : </label>{{ form_widget(registrationForm.email) }} <br>
+        <label for="password" id="password">Mot de passe : </label>{{ form_widget(registrationForm.plainPassword) }} <br>
+        <label for="confirmPassword">Confirmez le mot de passe  : </label> <br>
+        <input type="password" id="passwordConfirm" name="passwordconfirm" class="form-control">
+        {% for flashError in app.flashes('error') %}
+            <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+        {% endfor %}
+        <label for="dateNaissance">Date de naissance : </label> {{ form_widget(registrationForm.dateNaissance) }}
+        <button type="submit" class="btn btn-primary">Register</button>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}
