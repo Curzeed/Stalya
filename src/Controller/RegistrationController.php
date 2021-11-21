@@ -29,9 +29,8 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $passwordConfirm = $request->get('passwordConfirm');
+            $passwordConfirm = $request->get('passwordconfirm');
             if ($passwordConfirm === $form->get('plainPassword')->getData()) {
                 $user->setPassword(
                     $userPasswordHasherInterface->hashPassword(
@@ -48,16 +47,17 @@ class RegistrationController extends AbstractController
                 // @TODO Changer le corp du mail
                 $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                     (new TemplatedEmail())
-                        ->from(new Address('test@test.fr', 'test'))
+                        ->from(new Address('test@test.fr', 'bite'))
                         ->to($user->getEmail())
-                        ->subject('Please Confirm your Email')
+                        ->subject('Confirmez votre adresse e-mail')
                         ->htmlTemplate('registration/confirmation_email.html.twig')
                 );
                 // do anything else you need here, like send an email
                 // @TODO Change the redirect on success and handle or remove the flash message in your templates
-                return $this->redirectToRoute('_preview_error');
+                $this->addFlash('success','Ajout avec succès, veuillez confirmer votre adresse e-mail.');
+                return $this->redirectToRoute('app_login');
             }else{
-                $this->addFlash('error',"Les mots de passent ne correspondent pas ! ");
+                $this->addFlash('error',"Les mots de passe ne correspondent pas ! ");
                 return $this->redirectToRoute('app_register');
             }
         }
