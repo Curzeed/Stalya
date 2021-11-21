@@ -1,11 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/styleRegister.css') }}">
 {% endblock %}
 {% block title %}Register{% endblock %}
@@ -14,6 +9,7 @@
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
+    {{ form_start(registrationForm) }}
     <div class="container">
         <div class="formulaire">
             <div class="row justify-content-center">
@@ -21,7 +17,6 @@
                     <h1>S'enregistrer</h1>
                     <label for="username" id="username">Pseudo : </label>{{ form_widget(registrationForm.username) }}
                     <br>
-                    {{ form_start(registrationForm) }}
                     <label for="email">E-Mail : </label>{{ form_widget(registrationForm.email) }} <br>
                     <label for="password" id="password">Mot de passe
                         : </label>{{ form_widget(registrationForm.plainPassword) }} <br>
@@ -38,6 +33,4 @@
             </div>
         </div>
     </div>
-
-
 {% endblock %}
