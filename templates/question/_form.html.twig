@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_label(form.label) }}
+    {{ form_widget(form.label) }}
+    <ul class="tags" data-index="{{ form.reponses|length > 0 ? form.reponses|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.reponses.vars.prototype)|e('html_attr') }}"></ul>
+    <button type="button" class="add_item_link" data-collection-holder-class="tags">Add a tag</button>
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

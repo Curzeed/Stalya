@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,25 +52,21 @@ class RegistrationController extends AbstractController
                     'email' => $user->getEmail()
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
                 $email = (new Email())
-                        ->from('mescouilles@test.test')
+                        ->from('test@test.test')
                         ->to($user->getEmail())
                         ->subject('Confirmation de compte ! ')
                         ->html("
                             <a  href='$url'> Validez votre mail ! </a>
                             <p> $url</p>
                             ");
-
-
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
-
                 try {
                     $mailer->send($email);
                 } catch (TransportExceptionInterface $e) {
-                    dd($e->getMessage());
+                    echo $e->getMessage();
                 }
-
                 $this->addFlash('success','Ajout avec succès, veuillez confirmer votre adresse e-mail.');
                 return $this->redirectToRoute('app_login');
             }else{
@@ -77,7 +74,6 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('app_register');
             }
         }
-
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
@@ -86,9 +82,11 @@ class RegistrationController extends AbstractController
     /**
      * @Route ("/validate/email/{token}/{email}", name="validate_email")
      */
-    public function validateEmail($token, $email, UserRepository $ur){
+    public function validateEmail($token, $email, UserRepository $ur, EntityManagerInterface $er){
         $user = $ur->findOneBy(['email' =>$email]);
         $user->setIsVerified(true);
+        $er->persist($user);
+        $er->flush();
         $this->addFlash('success',"Votre e-mail a bien été vérifié !");
         return $this->redirectToRoute('app_login');
     }
