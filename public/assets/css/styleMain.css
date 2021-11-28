@@ -2,3 +2,8 @@ body{
     background-color : whitesmoke;
     font-family: 'Merriweather Sans', sans-serif;
 }
+
+.nav-item{
+    height: 3rem;
+
+}

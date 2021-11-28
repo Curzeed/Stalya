@@ -1,0 +1,22 @@
+{% extends 'main/index.html.twig' %}
+{% block title %}Accueil QCM{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="#">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>QCM : </h1>
+    </div>
+
+    <div class="container">
+        {% for  in  %}
+            
+        {% endfor %}
+    </div>
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('assets/js/script_qcm_index.js') }}"></script>
+    {% endblock %}
+{% endblock %}

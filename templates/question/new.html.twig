@@ -3,7 +3,7 @@
 {% block title %}New Question{% endblock %}
 
 {% block body %}
-    <h1>Create new Question</h1>
+    <h1>Créer une nouvelle question avec ses réponses</h1>
 
     {{ include('question/_form.html.twig') }}
     <script>
@@ -11,18 +11,21 @@
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 
             const item = document.createElement('li');
+            if(collectionHolder.dataset.index <= 3){
+                item.innerHTML = collectionHolder
+                    .dataset
+                    .prototype
+                    .replace(
+                        /__name__/g,
+                        collectionHolder.dataset.index
+                    );
 
-            item.innerHTML = collectionHolder
-                .dataset
-                .prototype
-                .replace(
-                    /__name__/g,
-                    collectionHolder.dataset.index
-                );
+                collectionHolder.appendChild(item);
 
-            collectionHolder.appendChild(item);
-
-            collectionHolder.dataset.index++;
+                collectionHolder.dataset.index++;
+            }else{
+                alert("Le nombre de réponse est limité à 4");
+            }
         };
         document
             .querySelectorAll('.add_item_link')

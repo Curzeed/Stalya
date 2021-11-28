@@ -19,6 +19,14 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+    public function findbyRandomInTwenty(){
+        return $this->createQueryBuilder('q')
+            ->select('q')
+            ->orderBy('q.id','')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */

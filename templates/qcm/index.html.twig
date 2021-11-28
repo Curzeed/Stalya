@@ -1,0 +1,57 @@
+{% extends 'main/index.html.twig' %}
+{% block title %}Accueil QCM{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="#">
+{% endblock %}
+
+{% block body %}
+    {% block nav %}
+        {{ parent() }}
+    {% endblock %}
+<div class="container">
+    <h1> QCM :</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <p class="" id="description_qcm"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus beatae
+            blanditiis delectus dolores eaque, earum est harum ipsum laborum, libero nobis obcaecati omnis quae quia
+            quidem, recusandae reiciendis sit ut!</p>
+    </div>
+    <div class="row">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Commencer le qcm
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Êtes-vous sûr de lancer le qcm ?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p> En cliquant sur oui vous allez être redirigé vers le qcm.
+                            <br>
+                            En cas d'échec vous devrez attendre 24h pour retenter le qcm !
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Non</button>
+                        <button type="button" class="btn btn-primary" onclick="location.href= '{{ path('main_qcm') }}'">
+                            Oui
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('assets/js/script_qcm_index.js') }}"></script>
+    {% endblock %}
+    {% endblock %}
+
