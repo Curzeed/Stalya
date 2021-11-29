@@ -23,7 +23,7 @@ class QuestionType extends AbstractType
                     'entry_type' => ReponsesType::class,
                     // these options are passed to each "email" type
                     'entry_options' => [
-                        'attr' => ['class' => 'email-box'],
+                        'attr' => ['class' => 'response_box'],
                     ],
                     'allow_add' => true
                 ]

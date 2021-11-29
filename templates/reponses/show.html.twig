@@ -8,7 +8,7 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th scope="row">Id</th>
                 <td>{{ reponse.id }}</td>
             </tr>
             <tr>
@@ -18,6 +18,10 @@
             <tr>
                 <th>Is_correct</th>
                 <td>{{ reponse.isCorrect ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Question associée : </th>
+                <td> {{ reponse.question.label }}</td>
             </tr>
         </tbody>
     </table>

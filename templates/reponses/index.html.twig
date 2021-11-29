@@ -1,37 +1,49 @@
-{% extends 'base.html.twig' %}
+    {% extends 'main/index.html.twig' %}
 
-{% block title %}Reponses index{% endblock %}
+{% block title %}Liste des réponses{% endblock %}
 
 {% block body %}
-    <h1>Reponses index</h1>
+    {% block nav %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="container">
+        <div class="table-responsive">
+            <h1 class="text-center">Reponses index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Label</th>
-                <th>Is_correct</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for reponse in reponses %}
-            <tr>
-                <td>{{ reponse.id }}</td>
-                <td>{{ reponse.label }}</td>
-                <td>{{ reponse.isCorrect ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('reponses_show', {'id': reponse.id}) }}">show</a>
-                    <a href="{{ path('reponses_edit', {'id': reponse.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <table class="table table-light table-striped me-md-3">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Intitulé</th>
+                    <th scope="col">Est correct ?</th>
+                    <th scope="col">Question associée : </th>
+                    <th scope="col">Actions</th>
 
-    <a href="{{ path('reponses_new') }}">Create new</a>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reponse in reponses %}
+                    <tr>
+                        <th scope="row">{{ reponse.id }}</th>
+                        <td>{{ reponse.label }}</td>
+                        <td>{{ reponse.isCorrect ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>' }}</td>
+                        <td> {{ reponse.question.label }}</td>
+                        <td>
+                            <a href="{{ path('reponses_show', {'id': reponse.id}) }}">Détails</a>
+                            <a href="{{ path('reponses_edit', {'id': reponse.id}) }}">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ path('reponses_new') }}">Create new</a>
+        </div>
+    </div>
+
+
+
 {% endblock %}

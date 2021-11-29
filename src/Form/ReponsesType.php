@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Question;
 use App\Entity\Reponses;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,9 +14,14 @@ class ReponsesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('label')
+            ->add('label',null,['label'=>'Réponse :'])
             ->add('is_correct')
-
+            ->add('question',EntityType::class,[
+                'label' => 'Question : ',
+                'class'=> Question::class,
+                'choice_label' =>'label',
+                'mapped'=>false
+            ])
         ;
     }
 

@@ -1,9 +1,12 @@
-{% extends 'base.html.twig' %}
+    {% extends 'main/index.html.twig' %}
 
 {% block title %}New Reponses{% endblock %}
 
 {% block body %}
-    <h1>Create new Reponses</h1>
+    {% block nav %}
+        {{ parent() }}
+    {%  endblock %}
+    <h1>Créer une nouvelle réponse par rapport à une question</h1>
 
     {{ include('reponses/_form.html.twig') }}
 

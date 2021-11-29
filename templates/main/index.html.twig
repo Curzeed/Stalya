@@ -11,11 +11,10 @@
         <div class="row">
             <div class="col-12">
                 <div class="container">
-                    <div class="row">
-                        <nav class="navbar navbar-expand justify-content-center" id="navbarSupportedContent">
-                            </button>
-                            <div class="collapse navbar-collapse">
-                                <ul class="navbar-nav">
+                    <div class="row ">
+                        <nav class="navbar navbar-expand " id="navbarSupportedContent">
+                            <div class="collapse justify-content-center navbar-collapse ">
+                                <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">Accueil</a>
                                     </li>
@@ -36,12 +35,11 @@
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                 <a href="{{ path('question_new') }}" class="dropdown-item">Ajouter une
                                                     question</a>
-                                                <a class="dropdown-item" href="#">Supprimer une question</a>
-                                                <a class="dropdown-item" href="#">Modifier une question</a>
+                                                <a class="dropdown-item" href="{{ path('question_index') }}">Liste des questions</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">Moyenne des réponses</a>
-                                                <a class="dropdown-item" href="#">...</a>
-                                                <a class="dropdown-item" href="#">...</a>
+                                                <a class="dropdown-item" href="{{ path('reponses_new') }}">Ajouter une réponse</a>
+                                                <a class="dropdown-item" href="{{ path('reponses_index') }}">Liste des réponses</a>
                                             </div>
                                         </li>
                                     {% endif %}
