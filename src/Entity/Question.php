@@ -29,6 +29,11 @@ class Question
      */
     private $reponses;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $value;
+
     public function __construct()
     {
         $this->reponses = new ArrayCollection();
@@ -85,5 +90,28 @@ class Question
     {
         $this->reponses = new ArrayCollection();
         return  $this;
+    }
+
+    public function getValue(): ?int
+    {
+        return $this->value;
+    }
+
+    public function setValue(int $value): self
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    public function countCorrect(): int
+    {
+        $i =0;
+        foreach ($this->getReponses() as $response) {
+            if($response->getIsCorrect()) {
+                $i++;
+            }
+        }
+        return $i;
     }
 }

@@ -11,8 +11,15 @@
     </div>
 
     <div class="container">
-        {% for  in  %}
-            
+        {% for question in questions %}
+            <ul>
+            {{ question.label }}
+            {% for reponse in question.reponses %}
+                {% if question.countCorrect > 1 %}
+            {% else %}
+                <span> Cette question n'a pas de réponse</span>
+            {% endfor %}
+            </ul>
         {% endfor %}
     </div>
     {% block javascripts %}

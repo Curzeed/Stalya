@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,9 +26,14 @@ class QuestionType extends AbstractType
                     'entry_options' => [
                         'attr' => ['class' => 'response_box'],
                     ],
-                    'allow_add' => true
+                    'allow_add' => true,
+                    'label'=>false,
                 ]
             )
+            ->add('value',IntegerType::class, [
+                'attr'=>['placeholder' => 'Mettre 1 de préférence', 'value'=>1],
+                'label'=>"Valeur de la question (pts attribués au candidat)",
+            ])
         ;
     }
 
