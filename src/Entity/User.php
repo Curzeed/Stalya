@@ -57,6 +57,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $tokenMail;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $score;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -185,6 +190,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTokenMail(?string $tokenMail): self
     {
         $this->tokenMail = $tokenMail;
+
+        return $this;
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(int $score): self
+    {
+        $this->score = $score;
 
         return $this;
     }

@@ -41,12 +41,10 @@ class QuestionController extends AbstractController
                 $response->setQuestion($question);
                 $question->addReponse($response);
             }
-
             $entityManager->persist($question);
             $entityManager->flush();
             return $this->redirectToRoute('question_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('question/new.html.twig', [
             'question' => $question,
             'form' => $form,

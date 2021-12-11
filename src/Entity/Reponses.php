@@ -52,7 +52,7 @@ class Reponses
 
     public function getIsCorrect(): ?bool
     {
-        return $this->is_correct == 1;
+        return $this->is_correct;
     }
 
     public function setIsCorrect(bool $is_correct): self

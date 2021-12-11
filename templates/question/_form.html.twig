@@ -1,6 +1,8 @@
 {{ form_start(form) }}
 <label for="question_widget">Question : </label>
     {{ form_widget(form.label) }}
+    {{ form_label(form.value) }}
+    {{ form_widget(form.value) }}
     <ul class="tags" data-index="{{ form.reponses|length > 0 ? form.reponses|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.reponses.vars.prototype)|e('html_attr') }}"></ul>
     <button type="button" class="add_item_link" data-collection-holder-class="tags">Ajouter une réponse</button>
     <button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>

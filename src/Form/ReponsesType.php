@@ -16,12 +16,12 @@ class ReponsesType extends AbstractType
         $builder
             ->add('label',null,['label'=>'Réponse :'])
             ->add('is_correct')
-            ->add('question',EntityType::class,[
-                'label' => 'Question : ',
-                'class'=> Question::class,
-                'choice_label' =>'label',
-                'mapped'=>false
-            ])
+//            ->add('question',EntityType::class,[
+//                'label' => 'Question : ',
+//                'class'=> Question::class,
+//                'choice_label' =>'label',
+//                'mapped'=>false
+//            ])
         ;
     }
 

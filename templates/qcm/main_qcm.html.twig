@@ -2,28 +2,34 @@
 {% block title %}Accueil QCM{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="#">
+    <link rel="stylesheet" href="{{ asset('assets/css/styleMainQcm.css') }}">
 {% endblock %}
 
 {% block body %}
     <div class="container">
         <h1>QCM : </h1>
     </div>
-
     <div class="container">
         {% for question in questions %}
             <ul>
-            {{ question.label }}
-            {% for reponse in question.reponses %}
-                {% if question.countCorrect > 1 %}
-            {% else %}
-                <span> Cette question n'a pas de réponse</span>
-            {% endfor %}
+                {{ question.label }}
+                {% for reponse in question.reponses %}
+                    {% if question.countCorrect() > 1 %}
+                        {# checkbox #}>
+                        <label for="response_Label">{{ reponse.label }}
+                        <input type="checkbox" name="response_checkbox" value="{{ reponse.iscorrect }}"></label>
+                    {% else %}
+                        {# radiobutton #}
+                        <label for="response_Label">{{ reponse.label }}
+                        <input type="radio" name="response_radio" value="{{ reponse.iscorrect }}"></label>
+                    {% endif%}
+                {% else %}
+                    <span> Cette question n'a pas de réponse</span>
+                {% endfor %}
             </ul>
         {% endfor %}
     </div>
     {% block javascripts %}
         {{ parent() }}
-        <script src="{{ asset('assets/js/script_qcm_index.js') }}"></script>
     {% endblock %}
 {% endblock %}

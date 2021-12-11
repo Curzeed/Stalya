@@ -17,17 +17,25 @@ class AdminController extends AbstractController
     #[Route('/', name: 'admin')]
     public function index(ChartBuilderInterface $chartBuilder, UserRepository $ur): Response
     {
-        $user = $ur->findAll();
-        $chart = $chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
-        $chart->setData([
-            'labels' => ['Score > 10', 'Score < 10'],
-            'datasets' => [
-                'label' => 'Test',
-                'data' => count($user, COUNT_NORMAL),
-                'backgroundColor' => 'rgb(255, 99, 132)',
-                'borderColor' => 'rgb(255, 99, 132)',
-            ]
-        ]);
+        $labels = [];
+        $datasets = [];
+        $users = $ur->findAll();
+
+        foreach ($users as $user) {
+            $labels[] = $user->getUserIdentifier();
+            $datasets[] = $user->getScore();
+            $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+            $chart->setData([
+                'labels' => $labels,
+                'datasets' => [
+                    'label' => 'Test',
+                    'backgroundColor' => 'rgb(255, 99, 132)',
+                    'borderColor' => 'rgb(255, 99, 132)',
+                    'data' => $datasets,
+                ]
+            ]);
+            $chart->setOptions([/* ... */]);
+        }
         return $this->render('admin/index.html.twig', ['chart' => $chart]);
     }
 }
