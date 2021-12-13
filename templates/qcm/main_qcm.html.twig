@@ -10,26 +10,39 @@
         <h1>QCM : </h1>
     </div>
     <div class="container">
-        {% for question in questions %}
-            <ul>
-                {{ question.label }}
-                {% for reponse in question.reponses %}
-                    {% if question.countCorrect() > 1 %}
-                        {# checkbox #}>
-                        <label for="response_Label">{{ reponse.label }}
-                        <input type="checkbox" name="response_checkbox" value="{{ reponse.iscorrect }}"></label>
+        <form action="{{ path('main_qcm') }}" method="post">
+            {% set i = 1 %}
+            {% for question in questions %}
+                <ul>
+                   <h4>Q.{{ i }} - {{ question.label }}</h4>
+                    {% for reponse in question.reponses %}
+
+                        {% if question.countCorrect() > 1 %}
+                            {# checkbox #}
+                            <div class="checkboxResp">
+                                <label for="response_Label">{{ reponse.label }}
+                                    <input type="checkbox" name="question_{{ question.id }}_response_{{ reponse.id }}"
+                                           class="checkbox_input"></label>
+                            </div>
+                        {% else %}
+                            {# radiobutton #}
+                            <div class="radioResp">
+                                <label for="response_radio_{{ reponse.id }}">{{ reponse.label }}
+                                    <input type="radio" name="response_radio_{{ question.id }}" value="{{ reponse.id }}"
+                                           id="response_radio_{{ reponse.id }}" class="radio_input"></label>
+                            </div>
+                        {% endif %}
                     {% else %}
-                        {# radiobutton #}
-                        <label for="response_Label">{{ reponse.label }}
-                        <input type="radio" name="response_radio" value="{{ reponse.iscorrect }}"></label>
-                    {% endif%}
-                {% else %}
-                    <span> Cette question n'a pas de réponse</span>
-                {% endfor %}
-            </ul>
-        {% endfor %}
+                        <span> Cette question n'a pas de réponse</span>
+                    {% endfor %}
+                </ul>
+                {% set i = i + 1  %}
+            {% endfor %}
+            <button type="submit" id="btn  btn-submit btn-primary">Envoyer</button>
+        </form>
     </div>
     {% block javascripts %}
         {{ parent() }}
+        <script src="{{ asset('assets/js/script_qcm_main.js') }}"></script>
     {% endblock %}
 {% endblock %}
