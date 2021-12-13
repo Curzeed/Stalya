@@ -76,7 +76,7 @@ class QCMController extends AbstractController
                         }
                     }
                 }
-
+                
                 $this->addFlash('success',"Vous avez terminé le qcm ! ");
                 $this->render('main/index.html.twig');
             }

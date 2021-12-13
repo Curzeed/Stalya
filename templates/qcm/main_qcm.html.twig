@@ -14,22 +14,23 @@
             {% set i = 1 %}
             {% for question in questions %}
                 <ul>
-                   <h4>Q.{{ i }} - {{ question.label }}</h4>
+                    {% if question.countCorrect() > 1 %}
+                        <h4 id="title_question">Q.{{ i }} - {{ question.label }}</h4>
+                    {% endif %}
                     {% for reponse in question.reponses %}
-
                         {% if question.countCorrect() > 1 %}
                             {# checkbox #}
                             <div class="checkboxResp">
-                                <label for="response_Label">{{ reponse.label }}
+                                <label for="response_Label">
                                     <input type="checkbox" name="question_{{ question.id }}_response_{{ reponse.id }}"
-                                           class="checkbox_input"></label>
+                                           class="checkbox_input">&nbsp;&nbsp;{{ reponse.label }}</label>
                             </div>
                         {% else %}
                             {# radiobutton #}
                             <div class="radioResp">
-                                <label for="response_radio_{{ reponse.id }}">{{ reponse.label }}
+                                <label for="response_radio_{{ reponse.id }}">
                                     <input type="radio" name="response_radio_{{ question.id }}" value="{{ reponse.id }}"
-                                           id="response_radio_{{ reponse.id }}" class="radio_input"></label>
+                                           id="response_radio_{{ reponse.id }}" class="radio_input"> &nbsp; &nbsp;{{ reponse.label }} </label>
                             </div>
                         {% endif %}
                     {% else %}
