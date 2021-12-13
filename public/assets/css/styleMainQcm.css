@@ -1,11 +1,8 @@
 body{
     background-color:darkcyan;
 }
-.checkboxResp{
-    padding: 0.3rem;
-    margin-left: 2rem;
-}
-.radioResp{
+
+.spacing_rep{
     padding: 0.3rem;
     margin-left: 2rem;
 }
