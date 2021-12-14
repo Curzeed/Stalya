@@ -25,14 +25,31 @@ class QCMController extends AbstractController
      */
     public function main(QuestionRepository $qr, Request $request, EntityManagerInterface $em) : Response{
         $questions = $qr->findAll();
-
             if($request->getMethod() == 'POST'){
                 $user = $this->getUser();
                 $tableauDeQuestions = [];
                 $data = $request->request->all();
+                $emptyresponses = 0;
                 foreach ($questions as $question){
-
+                    if ($question->countCorrect() <= 1 ) {
+                        $answered = array_key_exists('response_radio_'.$question->getId(), $data);
+                    } else {
+                        $answered = false;
+                        foreach ($question->getReponses() as $response) {
+                            $answered = array_key_exists('question_'.$question->getId().'_response_'.$response->getId(), $data);
+                            if ($answered) break;
+                        }
+                    }
+                    if ($answered === false) {
+                        $emptyresponses++;
+                    }
                     $tableauDeQuestions[$question->getId()] = $question;
+                }
+
+
+                if ($emptyresponses > 0) {
+                    $this->addFlash('warning',"Vus n'avez pas répondu à toutes les questions");
+                    return $this->render('qcm/main_qcm.html.twig', ['questions' => $tableauDeQuestions, 'answers' => $data]);
                 }
 
                 foreach ($data as $reponse  => $value){
@@ -51,9 +68,9 @@ class QCMController extends AbstractController
                         }
                         if(in_array($reponseId,$tabReponses)){
                             if($tabReponses[$reponseId]->getIsCorrect() == true){
-                                $user->setScore($user->getScore()+$current_question->getValue());
-                                $em->persist($user);
-                                $em->flush();
+                                $user->setScore($user->getScore()+$current_question->getValue()/$current_question->countCorrect());
+                            } else {
+                                $user->setScore($user->getScore()-$current_question->getValue()/$current_question->countCorrect());
                             }
                         }
                     }
@@ -71,16 +88,21 @@ class QCMController extends AbstractController
                         }
                         if($tabReponses[$reponseId]->getIsCorrect() == true){
                             $user->setScore($user->getScore()+$current_question->getValue());
-                            $em->persist($user);
-                            $em->flush();
+                        } else {
+                            $user->setScore($user->getScore()-$current_question->getValue());
                         }
                     }
                 }
+                $date = new \DateTime('now');
+                $date->modify('+1 hour');
+                $user->setLastAttempt($date);
+                $em->persist($user);
+                $em->flush();
                 
                 $this->addFlash('success',"Vous avez terminé le qcm ! ");
-                $this->render('main/index.html.twig');
+                return $this->redirectToRoute('main');
             }
 
-        return $this->render('qcm/main_qcm.html.twig', ['questions' => $questions]);
+        return $this->render('qcm/main_qcm.html.twig', ['questions' => $questions, 'answers' => []]);
     }
 }

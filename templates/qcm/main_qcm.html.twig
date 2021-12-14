@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block body %}
+    {% for warning in app.flashes('warning') %}
+        <div class="alert alert-warning" role="alert">{{ warning }}</div>
+    {% endfor %}
     <div class="container">
         <h1>QCM : </h1>
     </div>
@@ -20,19 +23,31 @@
                         <h4 id="title_question">Q.{{ i }} - {{ question.label }}</h4>
                     {% endif %}
                     {% for reponse in question.reponses %}
+                        {% set checked = '' %}
                         {% if question.countCorrect() > 1 %}
                             {# checkbox #}
+                            {% if answers['question_' ~  question.id  ~'_response_' ~  reponse.id ] is defined %}
+                                {% set checked = 'checked' %}
+                            {% endif %}
                             <div class="checkboxResp spacing_rep">
+                                <input type="checkbox" name="question_{{ question.id }}_response_{{ reponse.id }}"
+                                       class="checkbox_input" {{ checked }}>
                                 <label for="response_Label">
-                                    <input type="checkbox" name="question_{{ question.id }}_response_{{ reponse.id }}"
-                                           class="checkbox_input">&nbsp;&nbsp;{{ reponse.label }}</label>
+                                    &nbsp;&nbsp;{{ reponse.label }}
+                                </label>
                             </div>
                         {% else %}
                             {# radiobutton #}
+                            {% if answers['response_radio_' ~ question.id ] is defined and answers['response_radio_' ~ question.id] == reponse.id %}
+                                {% set checked = 'checked' %}
+                            {% endif %}
+
                             <div class="radioResp spacing_rep">
+                                <input type="radio" name="response_radio_{{ question.id }}" value="{{ reponse.id }}"
+                                       id="response_radio_{{ reponse.id }}" class="radio_input" {{ checked }}>
                                 <label for="response_radio_{{ reponse.id }}">
-                                    <input type="radio" name="response_radio_{{ question.id }}" value="{{ reponse.id }}"
-                                           id="response_radio_{{ reponse.id }}" class="radio_input"> &nbsp; &nbsp;{{ reponse.label }} </label>
+                                     &nbsp; &nbsp;{{ reponse.label }}
+                                </label>
                             </div>
                         {% endif %}
                     {% else %}

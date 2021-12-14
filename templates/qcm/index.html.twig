@@ -33,16 +33,31 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p> En cliquant sur oui vous allez être redirigé vers le qcm.
-                            <br>
-                            En cas d'échec vous devrez attendre 24h pour retenter le qcm !
-                        </p>
+                        {% if app.user.getLastAttempt|date_modify('+24 hour') > date() %}
+                            {% set bouton = '' %}
+                            <p>
+                                Vous devez attendre avant de pouvoir retenter le qcm
+                                <br>
+                                Cassez vous
+                            </p>
+                            <p >
+                                <input id="remaining" type="hidden" value="{{ app.user.getLastAttempt|date_modify('+24 hour').format('d M Y H:i:s') }}">
+                                Temps restant : <span id="timer"></span>
+                            </p>
+                        {% else %}
+                            {% set bouton = '<button type="button" class="btn btn-primary" onclick="location.href= ' ~ path('main_qcm') ~ '">
+                            Oui
+                        </button>' %}
+                            <p> En cliquant sur oui vous allez être redirigé vers le qcm.
+                                <br>
+                                En cas d'échec vous devrez attendre 24h pour retenter le qcm !
+                            </p>
+                        {% endif %}
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Non</button>
-                        <button type="button" class="btn btn-primary" onclick="location.href= '{{ path('main_qcm') }}'">
-                            Oui
-                        </button>
+                        {{ bouton }}
                     </div>
                 </div>
             </div>

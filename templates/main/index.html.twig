@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styleMain.css') }}">
 {% endblock %}
 {% block body %}
+    {% for success in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">{{ success }}</div>
+    {% endfor %}
     {% block nav %}
         <div class="container mt-5">
         <div class="row">

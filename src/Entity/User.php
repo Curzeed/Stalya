@@ -62,6 +62,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $score;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $last_attempt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -202,6 +207,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setScore(int $score): self
     {
         $this->score = $score;
+
+        return $this;
+    }
+
+    public function getLastAttempt(): ?\DateTimeInterface
+    {
+        return $this->last_attempt;
+    }
+
+    public function setLastAttempt(?\DateTimeInterface $last_attempt): self
+    {
+        $this->last_attempt = $last_attempt;
 
         return $this;
     }

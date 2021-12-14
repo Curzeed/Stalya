@@ -106,7 +106,7 @@ class Question
 
     public function countCorrect(): int
     {
-        $i =0;
+        $i = 0;
         foreach ($this->getReponses() as $response) {
             if($response->getIsCorrect()) {
                 $i++;
