@@ -7,9 +7,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/administration')]
@@ -41,12 +43,32 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route ("/manage_account", name="main_admin")
+     * @Route ("/manage_account/{page}", name="main_admin")
      */
-    public function account (UserRepository $ur) {
-        $users  = $ur->findAll();
+    public function account (UserRepository $ur, $page = 1) {
 
-        return $this->render('admin/manage_account.html.twig', ['users' => $users]);
+        $pageSize = '1';
+
+        $query = $ur->createQueryBuilder('u')
+            ->orderBy('u.id', 'DESC')
+            ->getQuery();
+
+        $paginator = new  \Doctrine\ORM\Tools\Pagination\Paginator($query);
+
+        $totalAccounts = count($paginator);
+
+        $pagesCount= ceil($totalAccounts / $pageSize);
+
+        $users = $paginator->getQuery()
+            ->setFirstResult($pageSize * ($page - 1))
+            ->setMaxResults($pageSize)
+            ->getResult();
+
+        return $this->render('admin/manage_account.html.twig', [
+            'users' => $users,
+            'pagesCount' => $pagesCount,
+            'current' => $page
+        ]);
     }
 
     /**
@@ -60,7 +82,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route ("/manage_account/{id}" , name="admin_updrade")
+     * @Route ("/manage_account/{id}" , name="admin_upgrade")
      */
     public function upgradeAccount($id, UserRepository $ur, EntityManagerInterface $em){
         $user = $ur->find(['id'=>$id]);

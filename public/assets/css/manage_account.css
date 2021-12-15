@@ -1,0 +1,12 @@
+
+
+.pagination > span > a{
+    text-decoration: none;
+    color: #525151;
+    padding-inline: 2px;
+    font-size: 2rem;
+}
+.pagination_current {
+    font-weight: bold;
+    color: black !important;
+}

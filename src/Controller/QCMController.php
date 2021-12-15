@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class QCMController extends AbstractController
 {
@@ -21,11 +22,16 @@ class QCMController extends AbstractController
 
     /**
      * @Route ("/main_qcm", name="main_qcm")
+     * @IsGranted("ROLE_USER")
      */
     public function main(QuestionRepository $qr, Request $request, EntityManagerInterface $em) : Response{
+        $user = $this->getUser();
+        if ($user->getLastAttempt() != null && $user->getLastAttempt()->modify('+24 hour') > date('now')) {
+            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+        }
+
         $questions = $qr->findAll();
             if($request->getMethod() == 'POST'){
-                $user = $this->getUser();
                 $tableauDeQuestions = [];
                 $data = $request->request->all();
                 $emptyresponses = 0;
@@ -44,7 +50,7 @@ class QCMController extends AbstractController
                     }
                     $tableauDeQuestions[$question->getId()] = $question;
                 }
-                if ($emptyresponses > 0) {
+                if ($emptyresponses > 0 && !array_key_exists('timeout',$data)) {
                     $this->addFlash('warning',"Vus n'avez pas répondu à toutes les questions");
                     return $this->render('qcm/main_qcm.html.twig', ['questions' => $tableauDeQuestions, 'answers' => $data]);
                 }
@@ -91,7 +97,6 @@ class QCMController extends AbstractController
                     }
                 }
                 $date = new \DateTime('now');
-                $date->modify('+1 hour');
                 $user->setLastAttempt($date);
                 $em->persist($user);
                 $em->flush();

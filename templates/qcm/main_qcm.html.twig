@@ -13,7 +13,10 @@
         <h1>QCM : </h1>
     </div>
     <div class="container">
-        <form action="{{ path('main_qcm') }}" method="post">
+        <p id="timer">
+
+        </p>
+        <form id="qcm_form" action="{{ path('main_qcm') }}" method="post">
             {% set i = 1 %}
             {% for question in questions %}
                 <ul>
@@ -31,8 +34,9 @@
                             {% endif %}
                             <div class="checkboxResp spacing_rep">
                                 <input type="checkbox" name="question_{{ question.id }}_response_{{ reponse.id }}"
+                                       id="question_{{ question.id }}_response_{{ reponse.id }}"
                                        class="checkbox_input" {{ checked }}>
-                                <label for="response_Label">
+                                <label for="question_{{ question.id }}_response_{{ reponse.id }}">
                                     &nbsp;&nbsp;{{ reponse.label }}
                                 </label>
                             </div>

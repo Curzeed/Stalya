@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+
+{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/manage_account.css') }}">
+{% endblock %}
 {% block body %}
     <div class="container">
         <h1 class="text-center">Gestion de compte </h1>
@@ -45,9 +52,9 @@
                         <th scope="row">{{ user.lastAttempt|date("d/m/Y/h:m:s")  }}</th>
                         <th scope="row"><a href="{{ path('admin_delete', {'id': user.id}) }}" onclick="return confirm('Êtes vous sûr de supprimer cet utilisateur ?')"><i class="fas fa-trash-alt"></i></a></th>
                             {% if user.roles[0] == 'ROLE_ADMIN' %}
-                                    <th scope="row"><a href="{{ path('admin_updrade', {'id' : user.id}) }}" onclick="return confirm('Êtes vous sûr de passer cet administrateur en utilisateur ?')"><i class="fas fa-user-minus"></i></a> </th>
+                                    <th scope="row"><a href="{{ path('admin_upgrade', {'id' : user.id}) }}" onclick="return confirm('Êtes vous sûr de passer cet administrateur en utilisateur ?')"><i class="fas fa-user-minus"></i></a> </th>
                                 {% else %}
-                                    <th scope="row"><a href="{{ path('admin_updrade', {'id' : user.id}) }}" onclick="return confirm('Êtes vous sûr de passer cet utilisateur administrateur ?')"><i class="fas fa-user-plus"></i></a> </th>
+                                    <th scope="row"><a href="{{ path('admin_upgrade', {'id' : user.id}) }}" onclick="return confirm('Êtes vous sûr de passer cet utilisateur administrateur ?')"><i class="fas fa-user-plus"></i></a> </th>
                             {% endif %}
                     </tr>
                 {% else %}
@@ -55,13 +62,24 @@
                         <td colspan="3">Aucun utilisateur trouvés</td>
                     </tr>
                 {% endfor %}
+
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="pagination justify-content-center">
+    {% for i in 1..pagesCount %}
+        <span>
+            <a href="{{ path('main_admin', {'page': i}) }}"
+                {% if i == current %}
+                    class="pagination_current"
+                {% endif %}>
+                {{ i }}
+            </a>
+        </span>
+    {% endfor %}
+    </div>
+
 {% endblock %}
 
-{% block title %}
-
-{% endblock %}
 

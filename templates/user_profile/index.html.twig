@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion du profil {{ app.user.username }}{% endblock %}
+
+{% block stylesheets%}
+{{ parent() }}
+{% endblock %}
+{% block body %}
+<div class="container">
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <h1>Gestion de compte</h1>
+
+    <div>
+        <h4>Changer de mot de passe</h4>
+        {{ form_start(formModif) }}
+        {{ form_widget(formModif) }}
+        {% for message in app.flashes('error') %}
+            <div class="flash-error">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <button>Modifier mon mot de Passe</button>
+        {{ form_end(formModif) }}
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
