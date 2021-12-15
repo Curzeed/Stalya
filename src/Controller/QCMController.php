@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Form\QCMType;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,8 +44,6 @@ class QCMController extends AbstractController
                     }
                     $tableauDeQuestions[$question->getId()] = $question;
                 }
-
-
                 if ($emptyresponses > 0) {
                     $this->addFlash('warning',"Vus n'avez pas répondu à toutes les questions");
                     return $this->render('qcm/main_qcm.html.twig', ['questions' => $tableauDeQuestions, 'answers' => $data]);

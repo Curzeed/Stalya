@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">Gestion de compte </h1>
+        <div class="table-responsive">
+            <table class="table table-light table-striped me-md-3">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Rôle</th>
+                    <th scope="col">Date de Naissance</th>
+                    <th scope="col">Vérifié</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">Dernière tentative</th>
+                    <th scope="col">Supprimer</th>
+                    <th scope="col">Upgrade</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <th scope="row">{{ user.id }}</th>
+                        <th scope="row">{{ user.username }}</th>
+                        <th scope="row">{{ user.email }}</th>
+                        {% if user.roles[0] == 'ROLE_ADMIN' %}
+                            <th scope="row"><i class="fas fa-user-shield"></i></th>
+                        {% else %}
+                            <th scope="row"><i class="fas fa-user"></i></th>
+                        {% endif %}
+
+                        <th scope="row">{{ user.dateNaissance|date("d/m/Y") }}</th>
+                        {% if user.verified == true %}
+                            <th scope="row"><i class="fas fa-check"></i></th>
+                            {% else %}
+                            <th scope="row"><i class="fas fa-times"></i></th>
+                        {% endif %}
+
+                        <th scope="row">{{ user.score }}</th>
+                        {% if user.lastAttempt is not defined %}
+                            <th scope="row">Pas d'essais</th>
+                        {% endif %}
+                        <th scope="row">{{ user.lastAttempt|date("d/m/Y/h:m:s")  }}</th>
+                        <th scope="row"><a href="{{ path('admin_delete', {'id': user.id}) }}" onclick="return confirm('Êtes vous sûr de supprimer cet utilisateur ?')"><i class="fas fa-trash-alt"></i></a></th>
+                            {% if user.roles[0] == 'ROLE_ADMIN' %}
+                                    <th scope="row"><a href="{{ path('admin_updrade', {'id' : user.id}) }}" onclick="return confirm('Êtes vous sûr de passer cet administrateur en utilisateur ?')"><i class="fas fa-user-minus"></i></a> </th>
+                                {% else %}
+                                    <th scope="row"><a href="{{ path('admin_updrade', {'id' : user.id}) }}" onclick="return confirm('Êtes vous sûr de passer cet utilisateur administrateur ?')"><i class="fas fa-user-plus"></i></a> </th>
+                            {% endif %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucun utilisateur trouvés</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
