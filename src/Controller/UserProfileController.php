@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Form\ModifyPasswordType;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +38,41 @@ class UserProfileController extends AbstractController
                 $this->addFlash('error', 'Votre ancien mot de passe ne correspond à celui que vous avez rentré.');
             }
         }
+
         return $this->renderForm('user_profile/index.html.twig',['formModif' => $formModif]);
+    }
+
+    /**
+     * @Route("/profile/link", name="user_profile_discord_link")
+     *
+     */
+    public function linkDiscord(Request $request, EntityManagerInterface $em) : Response{
+        $provider = new \Wohali\OAuth2\Client\Provider\Discord([
+            'clientId' => '920981831384440843',
+            'clientSecret' => 'ablnGro0-LICBWQX67JpVtb3iHVGOHMv',
+            'redirectUri' => 'http://localhost:8000/profile/link'
+        ]);
+        $authUrl = $provider->getAuthorizationUrl();
+        if(isset($_GET['code'])){
+            $code = $_GET['code'];
+
+            try {
+                $token = $provider->getAccessToken('authorization_code', [
+                    'code' => $code
+                ]);
+                $user = $provider->getResourceOwner($token);
+                //dd( "https://cdn.discordapp.com/avatars/".$user->getId()."/".$user->getAvatarHash().'.gif');
+                $sessionUser = $this->getUser();
+
+                $sessionUser->setDiscordId($user->getId());
+                $em->flush();
+
+            } catch (IdentityProviderException $e) {
+                dd($e->getMessage());
+            }
+
+        }
+
+        return $this->redirect($authUrl);
     }
 }

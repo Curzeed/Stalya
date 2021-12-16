@@ -67,6 +67,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $last_attempt;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $discord_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -219,6 +224,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastAttempt(?\DateTimeInterface $last_attempt): self
     {
         $this->last_attempt = $last_attempt;
+
+        return $this;
+    }
+
+    public function getDiscordId(): ?int
+    {
+        return $this->discord_id;
+    }
+
+    public function setDiscordId(?int $discord_id): self
+    {
+        $this->discord_id = $discord_id;
 
         return $this;
     }

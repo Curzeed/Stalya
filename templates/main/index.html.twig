@@ -9,16 +9,18 @@
     {% for success in app.flashes('success') %}
         <div class="alert alert-success" role="alert">{{ success }}</div>
     {% endfor %}
-    {% block nav %}
+
         <div class="account">
         {% if app.user %}
-                <a href="{{ path('user_profile_modify_password') }}">Gestion de compte</a>
+                <a href="{{ path('user_profile') }}">Gestion de compte</a>
             
             {% else %}
                 <a href="{{ path('app_login') }}">Se connecter</a>
                 <a href="{{ path('app_register') }}">S'inscrire</a> {# A bouger #}
         {% endif %}
+
         </div>
+        {% block nav %}
         <div class="container mt-5">
         <div class="row">
             <div class="col-12">
@@ -75,10 +77,10 @@
             </div>
         </div>
     </div>
+            {% endblock %}
 {% endblock%}
     {% block javascripts %}
         {{ parent() }}
         <script src="{{ asset('assets/js/test.js') }}"></script>
     {% endblock %}
-{% endblock %}
     
