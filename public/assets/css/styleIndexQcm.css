@@ -4,3 +4,9 @@
 #btn_launch_qcm{
     width: 3em;
 }
+.modal-header > h5{
+    color: black !important;
+}
+.modal-body > p{
+    color: black !important;
+}

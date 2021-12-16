@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\QuestionRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,13 +27,15 @@ class QCMController extends AbstractController
      */
     public function main(QuestionRepository $qr, Request $request, EntityManagerInterface $em) : Response{
         $user = $this->getUser();
-        if ($user->getLastAttempt() != null && $user->getLastAttempt()->modify('+24 hour') > date('now')) {
+        $atmDate = new DateTime('now');
+        if ($user->getLastAttempt() != null && $user->getLastAttempt()->modify('+24 hour') > $atmDate) {
             return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
         }
 
         $questions = $qr->findAll();
             if($request->getMethod() == 'POST'){
                 $tableauDeQuestions = [];
+                $user->setScore(0);
                 $data = $request->request->all();
                 $emptyresponses = 0;
                 foreach ($questions as $question){
@@ -96,7 +99,7 @@ class QCMController extends AbstractController
                         }
                     }
                 }
-                $date = new \DateTime('now');
+                $date = new DateTime('now');
                 $user->setLastAttempt($date);
                 $em->persist($user);
                 $em->flush();
