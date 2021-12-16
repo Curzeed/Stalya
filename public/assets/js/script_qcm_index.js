@@ -6,7 +6,7 @@ calculateTime()
 
 function calculateTime() {
     var now = new Date()
-    if (date - Date.parse(now) == 0) {
+    if( date - Date.parse(now) == 0) {
         window.location.reload()
     }
     time = convertHMS(date - Date.parse(now))

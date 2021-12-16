@@ -28,7 +28,7 @@
     </div>
     <div class="container">
         <div class="discord-link">
-            {% if empty app.user.discordId %}
+            {% if not app.user.discordId %}
                 <a href="{{ path('user_profile_discord_link') }}">
                     Lier son compte discord
                 </a>

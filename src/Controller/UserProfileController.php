@@ -62,10 +62,10 @@ class UserProfileController extends AbstractController
                 ]);
                 $user = $provider->getResourceOwner($token);
                 //dd( "https://cdn.discordapp.com/avatars/".$user->getId()."/".$user->getAvatarHash().'.gif');
-                $sessionUser = $this->getUser();
-
-                $sessionUser->setDiscordId($user->getId());
-                $em->flush();
+                //$sessionUser = $this->getUser();
+                dd($user);
+                //$sessionUser->setDiscordId($user->getId());
+                //$em->flush();
 
             } catch (IdentityProviderException $e) {
                 dd($e->getMessage());

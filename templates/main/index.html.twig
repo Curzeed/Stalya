@@ -6,42 +6,43 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styleMain.css') }}">
 {% endblock %}
 {% block body %}
-    {% for success in app.flashes('success') %}
-        <div class="alert alert-success" role="alert">{{ success }}</div>
-    {% endfor %}
 
-        <div class="account">
-        {% if app.user %}
-                <a href="{{ path('user_profile') }}">Gestion de compte</a>
-            
-            {% else %}
-                <a href="{{ path('app_login') }}">Se connecter</a>
-                <a href="{{ path('app_register') }}">S'inscrire</a> {# A bouger #}
-        {% endif %}
-
-        </div>
         {% block nav %}
-        <div class="container mt-5">
+            {% for success in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">{{ success }}</div>
+        {% endfor %}
+
+            <div class="account container">
+                {% if app.user %}
+                    <a href="{{ path('user_profile') }}"><i class="fas fa-user fontIcon"></i>Gestion de compte</a>
+                    <a href="{{ path('app_logout') }}"><i class="fas fa-power-off fontIcon"></i>Se déconnecter</a>
+                {% else %}
+
+                    <a href="{{ path('app_login') }}"><i class="far fa-user-circle"></i>Connexion</a>
+                {% endif %}
+
+            </div>
+        <div class="container-fluid background_body justify-items-center">
         <div class="row">
             <div class="col-12">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row ">
-                        <nav class="navbar navbar-expand " id="navbarSupportedContent">
-                            <div class="collapse justify-content-center navbar-collapse ">
-                                <ul class="navbar-nav mr-auto">
+                        <nav class="navbar navbar-expand" id="navbarSupportedContent">
+                            <div class="collapse justify-content-around navbar-collapse ">
+                                <ul class="navbar-nav">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">Accueil</a>
+                                        <a href="/" class="nav-link"><i class="fas fa-home fontIcon"></i>Accueil</a>
                                     </li>
                                    
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">Informations</a>
+                                        <a href="#" class="nav-link"><i class="fas fa-info-circle fontIcon"></i> Informations</a>
                                     </li>
                                     {# Admin Access #}
                                     {% if is_granted("ROLE_ADMIN") %}
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle" id="navbarDropdown"
                                                role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                               aria-expanded="false">
+                                               aria-expanded="false"><i class="fas fa-users-cog fontIcon"></i>
                                                 Administration
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -52,16 +53,15 @@
                                                 <a class="dropdown-item" href="#">Moyenne des réponses</a>
                                                 <a class="dropdown-item" href="{{ path('reponses_new') }}">Ajouter une réponse</a>
                                                 <a class="dropdown-item" href="{{ path('reponses_index') }}">Liste des réponses</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a href="{{ path('main_admin') }}" class="dropdown-item">Gérer les membres</a>
                                             </div>
                                         </li>
                                     {% endif %}
                                     {# If a user is connected #}
                                     {% if app.user %}
                                         <li class="nav-item">
-                                            <a href="{{ path('index_qcm') }}" class="nav-link">QCM</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_logout') }}" class="nav-link">Se déconnecter</a>
+                                            <a href="{{ path('index_qcm') }}" class="nav-link"> <i class="fas fa-tasks fontIcon"></i>QCM</a>
                                         </li>
                                     {% endif %}
                                     {# {% if app.user.score > 15 %} #}
@@ -77,10 +77,47 @@
             </div>
         </div>
     </div>
-            {% endblock %}
+        {% endblock %}
+            <div class="container mt-4">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ asset('assets/img/slider_1.jpg') }}" class="d-block w-100 imgCarousel" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('assets/img/slider_2.jpg') }}" class="d-block w-100 imgCarousel" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('assets/img/slider_3.jpg') }}" class="d-block w-100 imgCarousel" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+    {% block footer %}
+        <footer>
+            <div class="container-fluid">
+                <div class="copyright">
+                    <span class="span_copyright"> © 2020 - 2021. Toutes les images sont la propriétée de Rockstar North, Take-Two Interactive. Ce site n'est en aucun cas affilié à Rockstar North, Take-Two Interactive®.</span>
+                </div>
+            </div>
+        </footer>
+    {% endblock %}
 {% endblock%}
+
     {% block javascripts %}
         {{ parent() }}
-        <script src="{{ asset('assets/js/test.js') }}"></script>
     {% endblock %}
     
