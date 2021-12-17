@@ -18,6 +18,7 @@
         </p>
         <form id="qcm_form" action="{{ path('main_qcm') }}" method="post">
             {% set i = 1 %}
+            <input type="hidden" name="timer" id="input_timer" value="{{ timer ?? 900 }}">
             {% for question in questions %}
                 <ul>
                     {% if question.countCorrect() > 1 %}

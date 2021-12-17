@@ -28,11 +28,16 @@ class QCMController extends AbstractController
     public function main(QuestionRepository $qr, Request $request, EntityManagerInterface $em) : Response{
         $user = $this->getUser();
         $atmDate = new DateTime('now');
-        if ($user->getLastAttempt() != null && $user->getLastAttempt()->modify('+24 hour') > $atmDate) {
+        $questions = $qr->findAll();
+
+        if ($user->canParticipate() || $user->getnbTry() >= 3) {
+            $user->setnbTry(0);
+            $user->setLastAttempt($atmDate);
+            $em->flush();
             return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
         }
-
-        $questions = $qr->findAll();
+        $user->setnbTry($user->getnbTry()+1);
+        $em->flush();
             if($request->getMethod() == 'POST'){
                 $tableauDeQuestions = [];
                 $user->setScore(0);
@@ -55,7 +60,7 @@ class QCMController extends AbstractController
                 }
                 if ($emptyresponses > 0 && !array_key_exists('timeout',$data)) {
                     $this->addFlash('warning',"Vus n'avez pas répondu à toutes les questions");
-                    return $this->render('qcm/main_qcm.html.twig', ['questions' => $tableauDeQuestions, 'answers' => $data]);
+                    return $this->render('qcm/main_qcm.html.twig', ['questions' => $tableauDeQuestions, 'answers' => $data, 'timer' => $request->get('timer')]);
                 }
 
                 foreach ($data as $reponse  => $value){
@@ -101,6 +106,7 @@ class QCMController extends AbstractController
                 }
                 $date = new DateTime('now');
                 $user->setLastAttempt($date);
+                $user->setnbTry(0);
                 $em->persist($user);
                 $em->flush();
                 

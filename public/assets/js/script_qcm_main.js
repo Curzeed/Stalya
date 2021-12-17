@@ -1,4 +1,6 @@
-window.onload = timer(900)
+input = document.getElementById('input_timer')
+
+window.onload = timer(input.value)
 
 function timer(time) {
     if (time == 0) {
@@ -10,8 +12,10 @@ function timer(time) {
         form.submit()
     }
     let container = document.getElementById('timer')
+    let input = document.getElementById('input_timer')
     converted = convertMS(time)
     container.innerHTML = converted
+    input.value = time
     time--
     setTimeout(() => {
         timer(time)

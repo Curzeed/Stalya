@@ -68,9 +68,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $last_attempt;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string",length=450 ,nullable=true)
      */
     private $discord_id;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tokenDiscord;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nb_try;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Session::class, inversedBy="user")
+     */
+    private $session;
 
     public function getId(): ?int
     {
@@ -228,14 +243,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDiscordId(): ?int
+    public function getDiscordId(): ?string
     {
         return $this->discord_id;
     }
 
-    public function setDiscordId(?int $discord_id): self
+    public function setDiscordId(?string $discord_id): self
     {
         $this->discord_id = $discord_id;
+
+        return $this;
+    }
+
+    public function getTokenDiscord(): ?string
+    {
+        return $this->tokenDiscord;
+    }
+
+    public function setTokenDiscord(?string $tokenDiscord): self
+    {
+        $this->tokenDiscord = $tokenDiscord;
+
+        return $this;
+    }
+
+    public function getNbTry(): ?int
+    {
+        return $this->nb_try;
+    }
+
+    public function setNbTry(?int $nb_try): self
+    {
+        $this->nb_try = $nb_try;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canParticipate(): bool
+    {
+        $atmDate = new \DateTime('now');
+        $lastAttempt = clone $this->getLastAttempt();
+        return $this->getLastAttempt() != null && $lastAttempt->modify('+24 hour') > $atmDate;
+    }
+
+    public function getSession(): ?Session
+    {
+        return $this->session;
+    }
+
+    public function setSession(?Session $session): self
+    {
+        $this->session = $session;
 
         return $this;
     }

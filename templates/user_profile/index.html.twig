@@ -28,13 +28,20 @@
     </div>
     <div class="container">
         <div class="discord-link">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
             {% if not app.user.discordId %}
                 <a href="{{ path('user_profile_discord_link') }}">
                     Lier son compte discord
                 </a>
                 {% else %}
                 <div>
-                    délier (pa fait)
+                    <a href="{{ path('profile_revoke_discord') }}">
+                        Délier son compte Discord
+                    </a>
                 </div>
             {% endif %}
         </div>

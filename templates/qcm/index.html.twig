@@ -23,7 +23,7 @@
                     quidem, recusandae reiciendis sit ut!
                 </p>
             </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" id="btn_launch_qcm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     Commencer le qcm
@@ -40,7 +40,7 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                {% if app.user.getLastAttempt is not null and app.user.getLastAttempt|date_modify('+24 hour') > date() %}
+                                {% if app.user.canParticipate %}
                                     <p>
                                         Vous devez attendre avant de pouvoir retenter le qcm
                                         <br>

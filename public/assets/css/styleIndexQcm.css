@@ -2,7 +2,7 @@
     height: 45.2rem;
 }
 #btn_launch_qcm{
-    width: 3em;
+    width: fit-content;
 }
 .modal-header > h5{
     color: black !important;

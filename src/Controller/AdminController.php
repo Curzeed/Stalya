@@ -72,7 +72,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/manage_account/{id}", name="admin_delete")
+     * @Route("/manage_account/delete/{id}", name="admin_delete")
      */
     public function deleteAccount($id, UserRepository $ur, EntityManagerInterface $em ){
         $user = $ur->find(['id'=>$id]);
@@ -82,7 +82,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route ("/manage_account/{id}" , name="admin_upgrade")
+     * @Route ("/manage_account/upgrade/{id}" , name="admin_upgrade")
      */
     public function upgradeAccount($id, UserRepository $ur, EntityManagerInterface $em){
         $user = $ur->find(['id'=>$id]);
