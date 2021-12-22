@@ -6,114 +6,78 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styleMain.css') }}">
 {% endblock %}
 {% block body %}
+<body id="body-pd">
 
-        {% block nav %}
-            {% for success in app.flashes('success') %}
-            <div class="alert alert-success" role="alert">{{ success }}</div>
-        {% endfor %}
-
-            <div class="account container">
-                {% if app.user %}
-                    <a href="{{ path('user_profile') }}"><i class="fas fa-user fontIcon"></i>Gestion de compte</a>
-                    <a href="{{ path('app_logout') }}"><i class="fas fa-power-off fontIcon"></i>Se déconnecter</a>
-                {% else %}
-
-                    <a href="{{ path('app_login') }}"><i class="far fa-user-circle"></i>Connexion</a>
+<header class="header" id="header">
+    <div class="header_toggle"><i class='bx bx-menu' id="header-toggle"></i></div>
+    {% if app.user %}
+    {% if app.user.discordId %}
+        {% else %}
+        <div class="header_img"><img src="" alt=""></div>
+    {% endif %}
+    {% else %}
+    <div class="header_img"><a href=""></a></div>
+    {% endif %}
+</header>
+<div class="l-navbar" id="nav-bar">
+    <nav class="nav">
+        <div><a href="#" class="nav_logo"> <i class='bx bxs-joystick nav_logo-icon'></i> <span class="nav_logo-name">Stalya</span></a>
+            <div class="nav_list">
+                <a href="/" class="nav_link {% if app.request.attributes.get('_route') starts with 'main' %}active{% endif %}" id="dashboard">
+                    <i class='bx bx-grid-alt nav_icon'></i>
+                    <span class="nav_name">Dashboard</span>
+                </a>
+                <a href="{{ path('user_profile') }}" class="nav_link {% if app.request.attributes.get('_route') starts with 'user_profile' %}active{% endif %}" id="manage_account">
+                    <i class='bx bx-user nav_icon'></i>
+                    <span class="nav_name">Gestion du compte</span>
+                </a>
+                <a href="{{ path('index_qcm') }}" class="nav_link {% if app.request.attributes.get('_route') starts with 'qcm_main' %}active{% endif %}" id="qcm">
+                    <i class='bx bx-list-check nav_icon'></i>
+                    <span class="nav_name">QCM</span>
+                </a>
+                {% if app.user.canParticipate %}
+                    <a href="#" class="nav_link {% if app.request.attributes.get('_route') starts with 'session' %}active{% endif %}" id="session ">
+                        <i class='bx bx-bookmark nav_icon'></i>
+                        <span class="nav_name">Session</span>
+                    </a>
                 {% endif %}
-
-            </div>
-        <div class="container-fluid background_body justify-items-center">
-        <div class="row">
-            <div class="col-12">
-                <div class="container-fluid">
-                    <div class="row ">
-                        <nav class="navbar navbar-expand" id="navbarSupportedContent">
-                            <div class="collapse justify-content-around navbar-collapse ">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a href="/" class="nav-link"><i class="fas fa-home fontIcon"></i>Accueil</a>
-                                    </li>
-                                   
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><i class="fas fa-info-circle fontIcon"></i> Informations</a>
-                                    </li>
-                                    {# Admin Access #}
-                                    {% if is_granted("ROLE_ADMIN") %}
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" id="navbarDropdown"
-                                               role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                               aria-expanded="false"><i class="fas fa-users-cog fontIcon"></i>
-                                                Administration
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <a href="{{ path('question_new') }}" class="dropdown-item">Ajouter une
-                                                    question</a>
-                                                <a class="dropdown-item" href="{{ path('question_index') }}">Liste des questions</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Moyenne des réponses</a>
-                                                <a class="dropdown-item" href="{{ path('reponses_new') }}">Ajouter une réponse</a>
-                                                <a class="dropdown-item" href="{{ path('reponses_index') }}">Liste des réponses</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a href="{{ path('main_admin') }}" class="dropdown-item">Gérer les membres</a>
-                                            </div>
-                                        </li>
-                                    {% endif %}
-                                    {# If a user is connected #}
-                                    {% if app.user %}
-                                        <li class="nav-item">
-                                            <a href="{{ path('index_qcm') }}" class="nav-link"> <i class="fas fa-tasks fontIcon"></i>QCM</a>
-                                        </li>
-                                    {% endif %}
-{#                                    {% if app.user. %}#}
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
+                <a href="#" class="nav_link" id="informations">
+                    <i class='bx bx-info-circle nav_icon'></i>
+                    <span class="nav_name">Informations</span>
+                </a>
+                {% if "ROLE_ADMIN" in app.user.roles %}
+                <a href="#" class="nav_link {% if app.request.attributes.get('_route') starts with 'administration' %}active{% endif %}" id="administration">
+                    <i class='bx bx-shield-alt-2 nav_icon'></i>
+                    <span class="nav_name">Administration</span>
+                </a>
+                {% endif %}
             </div>
         </div>
-    </div>
-        {% endblock %}
-            <div class="container mt-4">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="{{ asset('assets/img/slider_1.jpg') }}" class="d-block w-100 imgCarousel" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{{ asset('assets/img/slider_2.jpg') }}" class="d-block w-100 imgCarousel" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{{ asset('assets/img/slider_3.jpg') }}" class="d-block w-100 imgCarousel" alt="...">
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
-    {% block footer %}
-        <footer>
-            <div class="container-fluid">
-                <div class="copyright">
-                    <span class="span_copyright"> © 2020 - 2021. Toutes les images sont la propriétée de Rockstar North, Take-Two Interactive. Ce site n'est en aucun cas affilié à Rockstar North, Take-Two Interactive®.</span>
-                </div>
-            </div>
-        </footer>
+        <a href="#" class="nav_link"> <i class='bx bx-power-off nav_icon'></i> <span class="nav_name">Se déconnecter</span> </a>
+    </nav>
+</div>
+<!--Container Main start-->
+<div class="height-100">
+    {% for success in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">{{ success }}</div>
+    {% endfor %}
+    {% block content %}
     {% endblock %}
-{% endblock%}
+</div>
+<!--Container Main end-->
+{% endblock %}
+{% block footer %}
+    <footer>
+        <div class="container-fluid">
+            <div class="copyright">
+                <span class="span_copyright "> © 2020 - 2021. Toutes les images sont la propriétée de Rockstar North, Take-Two Interactive. Ce site n'est en aucun cas affilié à Rockstar North, Take-Two Interactive®.</span>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
 
-    {% block javascripts %}
-        {{ parent() }}
-    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/indexMenu.js') }}"></script>
+{% endblock %}
     

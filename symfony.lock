@@ -142,6 +142,9 @@
     "psr/http-message": {
         "version": "1.0.1"
     },
+    "psr/link": {
+        "version": "1.1.1"
+    },
     "psr/log": {
         "version": "2.0.0"
     },
@@ -437,6 +440,9 @@
     },
     "symfony/var-exporter": {
         "version": "v5.3.8"
+    },
+    "symfony/web-link": {
+        "version": "v5.3.4"
     },
     "symfony/web-profiler-bundle": {
         "version": "5.3",

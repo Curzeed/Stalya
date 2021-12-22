@@ -22,7 +22,7 @@ class QCMController extends AbstractController
     }
 
     /**
-     * @Route ("/main_qcm", name="main_qcm")
+     * @Route ("/main_qcm", name="qcm_main")
      * @IsGranted("ROLE_USER")
      */
     public function main(QuestionRepository $qr, Request $request, EntityManagerInterface $em) : Response{

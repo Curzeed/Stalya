@@ -5,11 +5,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styleIndexQcm.css') }}">
 {% endblock %}
 
-{% block body %}
+{% block content %}
 
-    {% block nav %}
-        {{ parent() }}
-    {% endblock %}
     <div class="container fullPage">
         <div class="container">
             <h1 class="text-center mt-2"> QCM :</h1>
@@ -68,20 +65,16 @@
                                         </a>
                                     </div>
                                 {% endif %}
-
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% block footer %}
-        {{ parent() }}
-    {% endblock %}
+
+{% endblock %}
     {% block javascripts %}
         {{ parent() }}
         <script src="{{ asset('assets/js/script_qcm_index.js') }}"></script>
     {% endblock %}
-{% endblock %}
