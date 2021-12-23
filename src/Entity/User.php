@@ -87,6 +87,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $session;
 
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $imgDiscord;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -297,6 +302,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSession(?Session $session): self
     {
         $this->session = $session;
+
+        return $this;
+    }
+
+    public function getImgDiscord(): ?string
+    {
+        return $this->imgDiscord;
+    }
+
+    public function setImgDiscord(?string $imgDiscord): self
+    {
+        $this->imgDiscord = $imgDiscord;
 
         return $this;
     }

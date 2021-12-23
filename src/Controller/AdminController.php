@@ -18,28 +18,9 @@ use Knp\Component\Pager\PaginatorInterface;
 class AdminController extends AbstractController
 {
     #[Route('/', name: 'admin')]
-    public function index(ChartBuilderInterface $chartBuilder, UserRepository $ur): Response
-    {
-        $labels = [];
-        $datasets = [];
-        $users = $ur->findAll();
+    public function index(ChartBuilderInterface $chartBuilder, UserRepository $ur): Response{
 
-        foreach ($users as $user) {
-            $labels[] = $user->getUserIdentifier();
-            $datasets[] = $user->getScore();
-            $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
-            $chart->setData([
-                'labels' => $labels,
-                'datasets' => [
-                    'label' => 'Test',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => $datasets,
-                ]
-            ]);
-            $chart->setOptions([/* ... */]);
-        }
-        return $this->render('admin/index.html.twig', ['chart' => $chart]);
+        return $this->render('admin/index.html.twig');
     }
 
     /**

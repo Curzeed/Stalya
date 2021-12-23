@@ -54,6 +54,7 @@ class UserProfileController extends AbstractController
 
                 $sessionUser = $this->getUser();
                 $sessionUser->settokenDiscord($token);
+                $sessionUser->setimgDiscord($user->getAvatarHash());
                 $sessionUser->setDiscordId($user->getId());
                 $em->flush();
                 $this->addFlash('success', 'Compte lié à discord avec succès !');

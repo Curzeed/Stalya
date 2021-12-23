@@ -12,8 +12,9 @@
     <div class="header_toggle"><i class='bx bx-menu' id="header-toggle"></i></div>
     {% if app.user %}
     {% if app.user.discordId %}
+        <div class="header_img"><img src="https://cdn.discordapp.com/avatars/{{ app.user.discordId }}/{{ app.user.imgDiscord }}.gif" alt=""></div>
         {% else %}
-        <div class="header_img"><img src="" alt=""></div>
+        <div class="header_img nav_logo_stalya"><img src="{{ asset('assets/img/stalya.png') }}" alt="profile_image"></div>
     {% endif %}
     {% else %}
     <div class="header_img"><a href=""></a></div>
@@ -21,7 +22,7 @@
 </header>
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
-        <div><a href="#" class="nav_logo"> <i class='bx bxs-joystick nav_logo-icon'></i> <span class="nav_logo-name">Stalya</span></a>
+        <div><a href="#" class="nav_logo"> <img src="{{ asset('assets/img/stalya.png') }}" alt="logo Stalya" class="nav_logo_stalya"> <span class="nav_logo-name">Stalya</span></a>
             <div class="nav_list">
                 <a href="/" class="nav_link {% if app.request.attributes.get('_route') starts with 'main' %}active{% endif %}" id="dashboard">
                     <i class='bx bx-grid-alt nav_icon'></i>
@@ -46,10 +47,28 @@
                     <span class="nav_name">Informations</span>
                 </a>
                 {% if "ROLE_ADMIN" in app.user.roles %}
-                <a href="#" class="nav_link {% if app.request.attributes.get('_route') starts with 'administration' %}active{% endif %}" id="administration">
+                <a href="{{ path('admin') }}" class="nav_link {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %}" id="administration">
                     <i class='bx bx-shield-alt-2 nav_icon'></i>
                     <span class="nav_name">Administration</span>
                 </a>
+                    {% if app.request.attributes.get('_route') starts with 'admin' %}
+                        <a href="#" class="nav_link" id="informations">
+                            <i class='bx bx-question-mark nav_icon'></i>
+                            <span class="nav_name">Créer une question</span>
+                        </a>
+                        <a href="#" class="nav_link nav_admin" id="informations">
+                            <i class='bx bx-book-open nav_icon'></i>
+                            <span class="nav_name">Liste des questions</span>
+                        </a>
+                        <a href="#" class="nav_link nav_admin" id="informations">
+                            <i class='bx bxs-user nav_icon'></i>
+                            <span class="nav_name">Gérer les utilisateurs</span>
+                        </a>
+                        <a href="#" class="nav_link nav_admin" id="informations">
+                            <i class='bx bxs-group nav_icon'></i>
+                            <span class="nav_name">Créer une session</span>
+                        </a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
