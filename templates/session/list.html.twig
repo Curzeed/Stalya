@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'main/index.html.twig' %}
 
 {% block title %}Session index{% endblock %}
 
-{% block body %}
+{% block content %}
     <h1>Session index</h1>
 
     <table class="table">
@@ -30,5 +30,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('session_new') }}">Create new</a>
+    <a href="{{ path('session_new') }}" class="btn_form">Create new</a>
 {% endblock %}

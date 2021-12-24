@@ -24,7 +24,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route ("/manage_account/{page}", name="main_admin")
+     * @Route ("/manage_account/{page}", name="admin_manage_account")
      */
     public function account (UserRepository $ur, $page = 1) {
 

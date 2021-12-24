@@ -67,19 +67,19 @@
                             <span class="nav_name">Administration</span>
                         </a>
                         {% if app.request.attributes.get('_route') starts with 'admin' %}
-                            <a href="#" class="nav_link" id="informations">
+                            <a href="{{ path('question_new') }}" class="nav_link" id="informations">
                                 <i class='bx bx-question-mark nav_icon'></i>
                                 <span class="nav_name">Créer une question</span>
                             </a>
-                            <a href="#" class="nav_link nav_admin" id="informations">
+                            <a href="{{ path('question_index') }}" class="nav_link nav_admin" id="informations">
                                 <i class='bx bx-book-open nav_icon'></i>
                                 <span class="nav_name">Liste des questions</span>
                             </a>
-                            <a href="#" class="nav_link nav_admin" id="informations">
+                            <a href="{{ path('admin_manage_account') }}" class="nav_link nav_admin" id="informations">
                                 <i class='bx bxs-user nav_icon'></i>
                                 <span class="nav_name">Gérer les utilisateurs</span>
                             </a>
-                            <a href="#" class="nav_link nav_admin" id="informations">
+                            <a href="{{ path('session_index') }}" class="nav_link nav_admin" id="informations">
                                 <i class='bx bxs-group nav_icon'></i>
                                 <span class="nav_name">Créer une session</span>
                             </a>

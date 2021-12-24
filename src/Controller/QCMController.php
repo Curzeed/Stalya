@@ -104,8 +104,7 @@ class QCMController extends AbstractController
                         }
                     }
                 }
-                $date = new DateTime('now');
-                $user->setLastAttempt($date);
+                $user->setLastAttempt($atmDate);
                 $user->setnbTry(0);
                 $em->persist($user);
                 $em->flush();

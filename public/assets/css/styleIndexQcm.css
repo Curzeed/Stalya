@@ -10,3 +10,18 @@
 .modal-body > p{
     color: black !important;
 }
+a, button{
+    width: 30% !important;
+}
+.modal-footer{
+    justify-content: center;
+}
+#btn_launch_qcm{
+    background-color: #1e222f;
+}
+#btn_launch_qcm:hover{
+    background-color:#2c2f44;
+}
+h1{
+    padding-top: 2%;
+}

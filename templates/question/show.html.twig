@@ -1,10 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'main/index.html.twig' %}
 
 {% block title %}Question{% endblock %}
 
-{% block body %}
-    <h1>Question</h1>
+{% block content %}
+    <a href="{{ path('question_index') }}"><i class='bx bx-left-arrow-alt arrow_back'></i></a>
 
+    <h1>Question : {{ question.label }}</h1>
     <table class="table">
         <tbody>
             <tr>
@@ -18,7 +19,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('question_index') }}">back to list</a>
+
 
     <a href="{{ path('question_edit', {'id': question.id}) }}">edit</a>
 

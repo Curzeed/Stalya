@@ -122,7 +122,7 @@ a {
     font-size: 1.25rem
 }
 
-.show {
+#nav-bar.show {
     left: 0
 }
 
@@ -172,7 +172,7 @@ a {
         padding: 1rem 1rem 0 0
     }
 
-    .show {
+    #nav-bar.show {
         width: calc(var(--nav-width) + 156px)
     }
 
@@ -183,6 +183,37 @@ a {
 .nav_logo_stalya{
     width: 30px;
 }
-.nav_admin{
-
+.arrow_back{
+    font-size: 3vw;
+}
+.btn_form{
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color:var(--first-color);
+    width: 10em;
+    height: 2em;
+    padding: 0;
+    vertical-align: unset;
+}
+.btn_form:hover{
+    color: white;
+    background-color: #2c2f44;
+}
+.discord-login {
+    background-color: #7289DA;
+    border-radius: 50px;
+    min-width: 215px;
+    color: #fff;
+}
+a {
+    text-align: center;
+    width: 100%;
+}
+.discord-login:hover, a:hover{
+    color: #fff;
+}
+.discord-login:after, a:after{
+    opacity: 0;
 }
