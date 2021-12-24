@@ -1,4 +1,42 @@
 body{
     background-color : whitesmoke;
     font-family: 'Merriweather Sans', sans-serif;
+
+}
+form{
+    padding: 10vh;
+}
+h1{
+    text-align: center;
+}
+.form_login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+input[type="text"], input[type="password"]{
+    width: 20%;
+
+}
+.btn_group >a , .btn_group > button{
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    background-color:var(--first-color);
+}
+.btn_group >a:hover , .btn_group > button:hover{
+    background-color: #2c2f44;
+}
+.bouncy{
+    animation:bouncy 5s infinite linear;
+    position:relative;
+}
+@keyframes bouncy {
+0%{top:0em}
+40%{top:0em}
+43%{top:-0.9em}
+46%{top:0em}
+48%{top:-0.4em}
+50%{top:0em}
+100%{top:0em;}
 }
