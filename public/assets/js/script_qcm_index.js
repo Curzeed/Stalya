@@ -1,4 +1,5 @@
 var time_remaining = document.getElementById('remaining')
+console.log(document.getElementById('remaining'));
 var date = Date.parse(time_remaining.value)
 
 

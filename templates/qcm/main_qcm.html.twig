@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styleMainQcm.css') }}">
 {% endblock %}
 
-{% block body %}
+{% block content %}
     {% for warning in app.flashes('warning') %}
         <div class="alert alert-warning" role="alert">{{ warning }}</div>
     {% endfor %}
@@ -16,7 +16,7 @@
         <p id="timer">
 
         </p>
-        <form id="qcm_form" action="{{ path('main_qcm') }}" method="post">
+        <form id="qcm_form" action="{{ path('qcm_main') }}" method="post">
             {% set i = 1 %}
             <input type="hidden" name="timer" id="input_timer" value="{{ timer ?? 900 }}">
             {% for question in questions %}

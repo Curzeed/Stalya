@@ -1,18 +1,11 @@
 {% extends 'main/index.html.twig' %}
 
 {% block title %}New Session{% endblock %}
-{% block stylesheets %}
-{{ parent() }}
 
-{% endblock %}
 {% block content %}
-    <a href="{{ path('session_index') }}"><i class='bx bx-left-arrow-alt arrow_back'> </i></a>
-    <h1 style="text-align: center">Créer une nouvelle session</h1>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn_form">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
+    <h1>Create new Session</h1>
 
+    {{ include('session/_form.html.twig') }}
 
+    <a href="{{ path('session_index') }}">back to list</a>
 {% endblock %}
-

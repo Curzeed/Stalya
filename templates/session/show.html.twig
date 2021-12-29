@@ -1,8 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'main/index.html.twig' %}
 
 {% block title %}Session{% endblock %}
 
-{% block body %}
+{% block content %}
+    <a href="{{ path('session_index') }}"><i class='bx bx-left-arrow-alt arrow_back'></i></a>
     <h1>Session</h1>
 
     <table class="table">
@@ -13,7 +14,7 @@
             </tr>
             <tr>
                 <th>Date</th>
-                <td>{{ session.date ? session.date|date('Y-m-d') : '' }}</td>
+                <td>{{ session.date ? session.date|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Nb_place</th>
@@ -22,9 +23,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('session_index') }}">back to list</a>
 
-    <a href="{{ path('session_edit', {'id': session.id}) }}">edit</a>
+
+    <a href="{{ path('session_edit', {'id': session.id}) }}" class="btn btn_form">edit</a>
 
     {{ include('session/_delete_form.html.twig') }}
 {% endblock %}

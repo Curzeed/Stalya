@@ -1,0 +1,37 @@
+{% extends 'main/index.html.twig' %}
+
+{% block title %}Session index{% endblock %}
+
+{% block content %}
+    <h1>Session index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Nombre de place</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for session in sessions %}
+            <tr>
+                <td>{{ session.id }}</td>
+                <td>{{ session.date ? session.date|date('d/m/Y - H:i') : '' }}</td>
+                <td>{{ session.nbPlace }}</td>
+                <td>
+                    <a href="{{ path('session_show', {'id': session.id}) }}" class="btn_tabs">Détails</a>
+                    <a href="{{ path('session_edit', {'id': session.id}) }}" class="btn_tabs">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucunes sessions trouvées</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('session_new') }}" class="btn btn_form">Nouvelle session</a>
+{% endblock %}

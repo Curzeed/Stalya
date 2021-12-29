@@ -1,10 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'main/index.html.twig' %}
 
 {% block title %}New Question{% endblock %}
 
-{% block body %}
-    <h1>Créer une nouvelle question avec ses réponses</h1>
-
+{% block content %}
+    <h1 class="text-center">Créer une nouvelle question avec ses réponses</h1>
     {{ include('question/_form.html.twig') }}
     <script>
         const addFormToCollection = (e) => {
@@ -31,6 +30,5 @@
             .querySelectorAll('.add_item_link')
             .forEach(btn => btn.addEventListener("click", addFormToCollection));
     </script>
-    <a href="{{ path('question_index') }}">back to list</a>
-
+    <a href="{{ path('question_index') }}" class="btn btn_form">Revenir à la liste des questions  : </a>
 {% endblock %}

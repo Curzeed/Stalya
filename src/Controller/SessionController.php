@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Session;
-use App\Form\SessionType;
+use App\Form\Session1Type;
 use App\Repository\SessionRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +26,7 @@ class SessionController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $session = new Session();
-        $form = $this->createForm(SessionType::class, $session);
+        $form = $this->createForm(Session1Type::class, $session);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -55,7 +53,7 @@ class SessionController extends AbstractController
     #[Route('/{id}/edit', name: 'session_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Session $session, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(SessionType::class, $session);
+        $form = $this->createForm(Session1Type::class, $session);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,27 +77,5 @@ class SessionController extends AbstractController
         }
 
         return $this->redirectToRoute('session_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    /**
-     * @Route ("/list", name="session_list")
-     * @IsGranted ("ROLE_USER")
-     */
-    public function list(SessionRepository $sessionRepository) {
-        return $this->render('session/list.html.twig', [
-            'sessions' => $sessionRepository->findAll(),
-        ]);
-    }
-
-    /**
-     * @IsGranted ("ROLE_USER")
-     * @Route ("/register/{id}", name="session_register")
-     */
-    public function register(SessionRepository $sr, EntityManagerInterface $em, Session $session) {
-        $user = $this->getUser();
-        $user->setSession($session);
-        $em->flush();
-
-        return $this->redirectToRoute('session_list');
     }
 }

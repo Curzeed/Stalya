@@ -77,7 +77,6 @@ class UserProfileController extends AbstractController
             'clientSecret' => 'ablnGro0-LICBWQX67JpVtb3iHVGOHMv',
             'redirectUri' => 'http://localhost:8000/profile'
         ]);
-        $provider->
         $authUrl = $provider->getAuthorizationUrl([
             'scope' => ['identify']
         ]);
