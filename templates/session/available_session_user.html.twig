@@ -1,0 +1,21 @@
+{% extends 'main/index.html.twig' %}
+
+{% block title %}Liste des Sessions : {% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Sessions disponibles </h1>
+    {% for session in sessions %}
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Session : </h5>
+                <p class="card-text">Session disponible à {{ session.date|date('Y-m-d H:i:s') }}</p>
+                {% if session == app.user.session %}
+                <a href="{{ path('session_revoke', {'id' : session.id}) }}" class="btn btn-primary"> Se désister  ({{session.nbPlace}})</a>
+                    {% else %}
+                <a href="{{ path('session_inscription', {'id' : session.id}) }}" class="btn btn-primary">S'inscrire  ({{session.nbPlace}})</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

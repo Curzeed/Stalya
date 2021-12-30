@@ -317,4 +317,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function canBeAddToSession(){
+        $res = false;
+        if($this->getScore() > 18){
+            $res = true;
+        }
+        return $res;
+    }
 }

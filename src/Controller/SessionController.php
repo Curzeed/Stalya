@@ -75,7 +75,7 @@ class SessionController extends AbstractController
             $entityManager->remove($session);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('session_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

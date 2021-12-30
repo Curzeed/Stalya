@@ -34,11 +34,13 @@
                     <i class='bx bx-grid-alt nav_icon'></i>
                     <span class="nav_name">Dashboard</span>
                 </a>
+                {% if app.user %}
                 <a href="{{ path('user_profile') }}"
                    class="nav_link {% if app.request.attributes.get('_route') starts with 'user_profile' %}active{% endif %}"
                    id="manage_account">
                     <i class='bx bx-user nav_icon'></i>
                     <span class="nav_name">Gestion du compte</span>
+
                 </a>
                 <a href="{{ path('index_qcm') }}"
                    class="nav_link {% if app.request.attributes.get('_route') starts with 'qcm_main' %}active{% endif %}"
@@ -46,8 +48,9 @@
                     <i class='bx bx-list-check nav_icon'></i>
                     <span class="nav_name">QCM</span>
                 </a>
+                {% endif %}
                 {% if app.user %}
-                    <a href="#"
+                    <a href="{{ path('session_list_users') }}"
                        class="nav_link {% if app.request.attributes.get('_route') starts with 'session' %}active{% endif %}"
                        id="session ">
                         <i class='bx bx-bookmark nav_icon'></i>

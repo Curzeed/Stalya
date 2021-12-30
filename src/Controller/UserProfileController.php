@@ -40,22 +40,15 @@ class UserProfileController extends AbstractController
             }
         }if(isset($_GET['code'])) {
             $code = $_GET['code'];
-            $provider = new \Wohali\OAuth2\Client\Provider\Discord([
-                'clientId' => '920981831384440843',
-                'clientSecret' => 'ablnGro0-LICBWQX67JpVtb3iHVGOHMv',
-                'redirectUri' => 'http://localhost:8000/profile'
-            ]);
+            $dsOauthProvider = new ServicesDiscord();
             try {
-                $token = $provider->getAccessToken('authorization_code', [
-                    'code' => $code
-                ]);
-                $user = $provider->getResourceOwner($token);
+                $token = $dsOauthProvider->tryGetToken($code);
+                $userInfos = $dsOauthProvider->getUserInfos($token['access_token']);
                 //dd( "https://cdn.discordapp.com/avatars/".$user->getId()."/".$user->getAvatarHash().'.gif');
-
                 $sessionUser = $this->getUser();
-                $sessionUser->settokenDiscord($token);
-                $sessionUser->setimgDiscord($user->getAvatarHash());
-                $sessionUser->setDiscordId($user->getId());
+                $sessionUser->settokenDiscord($token['access_token']);
+                $sessionUser->setimgDiscord($userInfos['avatar']);
+                $sessionUser->setDiscordId($userInfos['id']);
                 $em->flush();
                 $this->addFlash('success', 'Compte lié à discord avec succès !');
                 $this->redirectToRoute('user_profile');
