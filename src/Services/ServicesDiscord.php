@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Symfony\Component\HttpClient\HttpClient;
 class ServicesDiscord
     /**
      * @param string $code
@@ -85,5 +86,18 @@ class ServicesDiscord
         ));
         $response = curl_exec($ch);
         return json_decode($response);
+    }
+
+    function tryGetToken2(string $code){
+        $fields = array(
+            'client_id' => $_SERVER['DISCORD_CLIENT_ID'],
+            'client_secret' => $_SERVER['DISCORD_CLIENT_SECRET'],
+            'code' => $code,
+            'redirect_uri' => $_SERVER['DISCORD_REDIRECT_URI'],
+            'grant_type' => 'authorization_code'
+        );
+        $client = HttpClient::create();
+
+
     }
 }

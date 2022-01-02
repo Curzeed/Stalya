@@ -290,8 +290,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function canParticipate(): bool
     {
         $atmDate = new \DateTime('now');
-        $lastAttempt = clone $this->getLastAttempt();
-        return $this->getLastAttempt() != null && $lastAttempt->modify('+24 hour') > $atmDate;
+        if($this->getLastAttempt() != null){
+            $lastAttempt = $this->getLastAttempt();
+            return $lastAttempt->modify('+24 hour') > $atmDate;
+        }
+        return true;
     }
 
     public function getSession(): ?Session

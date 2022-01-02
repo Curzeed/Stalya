@@ -7,10 +7,12 @@ use App\Services\ServicesDiscord;
 use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function Symfony\Component\Translation\t;
 
 class UserProfileController extends AbstractController
 {
@@ -18,7 +20,12 @@ class UserProfileController extends AbstractController
     /**
      * @Route("/profile", name="user_profile")
      */
-    public function modifyPassword(Request $request, UserPasswordHasherInterface $passwordEncoder, EntityManagerInterface $em) : Response {
+    public function modifyPassword(Request $request, UserPasswordHasherInterface $passwordEncoder, EntityManagerInterface $em, SessionInterface $session) : Response {
+
+        if(isset($_GET['code'])) {
+            $session->set('discord_code', $_GET['code']);
+            return $this->redirectToRoute('user_profile');
+        }
 
         $user = $this->getUser();
         $formModif = $this->createForm(ModifyPasswordType::class);
@@ -38,18 +45,20 @@ class UserProfileController extends AbstractController
             }else{
                 $this->addFlash('error', 'Votre ancien mot de passe ne correspond à celui que vous avez rentré.');
             }
-        }if(isset($_GET['code'])) {
-            $code = $_GET['code'];
+        }
+
+        if($session->get('discord_code')) {
+            $code = $session->get('discord_code');
             $dsOauthProvider = new ServicesDiscord();
             try {
                 $token = $dsOauthProvider->tryGetToken($code);
                 $userInfos = $dsOauthProvider->getUserInfos($token['access_token']);
                 //dd( "https://cdn.discordapp.com/avatars/".$user->getId()."/".$user->getAvatarHash().'.gif');
-                $sessionUser = $this->getUser();
-                $sessionUser->settokenDiscord($token['access_token']);
-                $sessionUser->setimgDiscord($userInfos['avatar']);
-                $sessionUser->setDiscordId($userInfos['id']);
+                $user->settokenDiscord($token['access_token']);
+                $user->setimgDiscord($userInfos['avatar']);
+                $user->setDiscordId($userInfos['id']);
                 $em->flush();
+                $session->remove('discord_code');
                 $this->addFlash('success', 'Compte lié à discord avec succès !');
                 $this->redirectToRoute('user_profile');
             } catch (IdentityProviderException $e) {
@@ -92,6 +101,7 @@ class UserProfileController extends AbstractController
             ));
             $this->getUser()->setDiscordId(null);
             $this->getUser()->settokenDiscord(null);
+            $this->getUser()->setImgDiscord(null);
             $em->flush();
             $this->addFlash('success','Compte discord délié avec succès');
 

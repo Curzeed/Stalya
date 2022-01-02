@@ -45,7 +45,7 @@
                                     </p>
                                     <p>
                                         <input id="remaining" type="hidden"
-                                               value="{{ app.user.getLastAttempt|date_modify('+24 hour').format('d M Y H:i:s') }}">
+                                               value="{{ app.user.getLastAttempt|date_modify('+ 0 hour').format('d M Y H:i:s') }}">
                                         Temps restant : <span id="timer"></span>
                                     </p>
                                     <div class="modal-footer">
