@@ -33,6 +33,11 @@ class Reponses
      */
     private $question;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="responses_history")
+     */
+    private $user_history;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +75,18 @@ class Reponses
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    public function getUserHistory(): ?User
+    {
+        return $this->user_history;
+    }
+
+    public function setUserHistory(?User $user_history): self
+    {
+        $this->user_history = $user_history;
 
         return $this;
     }

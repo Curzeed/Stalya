@@ -104,6 +104,12 @@ class QCMController extends AbstractController
                         }
                     }
                 }
+                //$user->addResponsesHistory($data);
+                //$user->addQuestionHistory($tableauDeQuestions);
+               // foreach ($question as $tableauDeQuestions){
+                 //   $user->addQuestionHistory($question);
+             //   }
+
                 $user->setLastAttempt($atmDate);
                 $user->setnbTry(0);
                 $em->persist($user);

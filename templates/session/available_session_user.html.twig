@@ -9,11 +9,14 @@
             <img class="card-img-top" src="" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Session : </h5>
-                <p class="card-text">Session disponible à {{ session.date|date('Y-m-d H:i:s') }}</p>
+                <p class="card-text">Session disponible à {{ session.date|date('d M y H:i:s', 'Europe/Paris') }}</p>
                 {% if session == app.user.session %}
-                <a href="{{ path('session_revoke', {'id' : session.id}) }}" class="btn btn-primary"> Se désister  ({{session.nbPlace}})</a>
+                <a href="{{ path('session_revoke', {'id' : session.id}) }}" class="btn btn-primary"> Se désister </a>
                     {% else %}
-                <a href="{{ path('session_inscription', {'id' : session.id}) }}" class="btn btn-primary">S'inscrire  ({{session.nbPlace}})</a>
+                <a href="{{ path('session_inscription', {'id' : session.id}) }}" class="btn btn-primary">S'inscrire  ({{session.user|length ~ '/' ~  session.nbplace }} inscrits)</a>
+                    {% if "ROLE_ADMIN" in app.user.roles %}
+                        <a href=""></a>   
+                    {% endif%}    
                 {% endif %}
             </div>
         </div>

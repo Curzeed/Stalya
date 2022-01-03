@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -91,6 +93,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=500, nullable=true)
      */
     private $imgDiscord;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reponses::class, mappedBy="user_history")
+     */
+    private $responses_history;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="user_history")
+     */
+    private $question_history;
+
+    public function __construct()
+    {
+        $this->response = new ArrayCollection();
+        $this->responses_history = new ArrayCollection();
+        $this->question_history = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -326,5 +345,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $res = true;
         }
         return $res;
+    }
+
+
+    /**
+     * @return Collection|Reponses[]
+     */
+    public function getResponsesHistory(): Collection
+    {
+        return $this->responses_history;
+    }
+
+    public function addResponsesHistory(Reponses $responsesHistory): self
+    {
+        if (!$this->responses_history->contains($responsesHistory)) {
+            $this->responses_history[] = $responsesHistory;
+            $responsesHistory->setUserHistory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsesHistory(Reponses $responsesHistory): self
+    {
+        if ($this->responses_history->removeElement($responsesHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($responsesHistory->getUserHistory() === $this) {
+                $responsesHistory->setUserHistory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestionHistory(): Collection
+    {
+        return $this->question_history;
+    }
+
+    public function addQuestionHistory(Question $questionHistory): self
+    {
+        if (!$this->question_history->contains($questionHistory)) {
+            $this->question_history[] = $questionHistory;
+            $questionHistory->setUserHistory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionHistory(Question $questionHistory): self
+    {
+        if ($this->question_history->removeElement($questionHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($questionHistory->getUserHistory() === $this) {
+                $questionHistory->setUserHistory(null);
+            }
+        }
+
+        return $this;
     }
 }
