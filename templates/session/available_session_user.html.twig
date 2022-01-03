@@ -14,10 +14,11 @@
                 <a href="{{ path('session_revoke', {'id' : session.id}) }}" class="btn btn-primary"> Se désister </a>
                     {% else %}
                 <a href="{{ path('session_inscription', {'id' : session.id}) }}" class="btn btn-primary">S'inscrire  ({{session.user|length ~ '/' ~  session.nbplace }} inscrits)</a>
-                    {% if "ROLE_ADMIN" in app.user.roles %}
-                        <a href=""></a>   
-                    {% endif%}    
+
                 {% endif %}
+                {% if "ROLE_ADMIN" in app.user.roles %}
+                    <a href="{{ path('session_list_users',{'id' : session.id}) }}" class="btn btn-primary">Voir les utilisateurs</a>
+                {% endif%}
             </div>
         </div>
     {% endfor %}

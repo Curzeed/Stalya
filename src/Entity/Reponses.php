@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReponsesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,9 +36,15 @@ class Reponses
     private $question;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="responses_history")
+     * @ORM\OneToMany(targetEntity=History::class, mappedBy="response")
      */
-    private $user_history;
+    private $histories;
+
+    public function __construct()
+    {
+        $this->histories = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -79,15 +87,34 @@ class Reponses
         return $this;
     }
 
-    public function getUserHistory(): ?User
+    /**
+     * @return Collection|History[]
+     */
+    public function getHistories(): Collection
     {
-        return $this->user_history;
+        return $this->histories;
     }
 
-    public function setUserHistory(?User $user_history): self
+    public function addHistory(History $history): self
     {
-        $this->user_history = $user_history;
+        if (!$this->histories->contains($history)) {
+            $this->histories[] = $history;
+            $history->setResponse($this);
+        }
 
         return $this;
     }
+
+    public function removeHistory(History $history): self
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getResponse() === $this) {
+                $history->setResponse(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

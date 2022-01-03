@@ -95,21 +95,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $imgDiscord;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reponses::class, mappedBy="user_history")
+     * @ORM\OneToOne(targetEntity=History::class, mappedBy="user", cascade={"persist", "remove"})
      */
-    private $responses_history;
+    private $history;
 
     /**
-     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="user_history")
+     * @ORM\OneToMany(targetEntity=History::class, mappedBy="user")
      */
-    private $question_history;
+    private $histories;
 
     public function __construct()
     {
-        $this->response = new ArrayCollection();
-        $this->responses_history = new ArrayCollection();
-        $this->question_history = new ArrayCollection();
+        $this->histories = new ArrayCollection();
     }
+
+
+
 
     public function getId(): ?int
     {
@@ -347,64 +348,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $res;
     }
 
-
     /**
-     * @return Collection|Reponses[]
+     * @return Collection|History[]
      */
-    public function getResponsesHistory(): Collection
+    public function getHistories(): Collection
     {
-        return $this->responses_history;
+        return $this->histories;
     }
 
-    public function addResponsesHistory(Reponses $responsesHistory): self
+    public function addHistory(History $history): self
     {
-        if (!$this->responses_history->contains($responsesHistory)) {
-            $this->responses_history[] = $responsesHistory;
-            $responsesHistory->setUserHistory($this);
+        if (!$this->histories->contains($history)) {
+            $this->histories[] = $history;
+            $history->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeResponsesHistory(Reponses $responsesHistory): self
+    public function removeHistory(History $history): self
     {
-        if ($this->responses_history->removeElement($responsesHistory)) {
+        if ($this->histories->removeElement($history)) {
             // set the owning side to null (unless already changed)
-            if ($responsesHistory->getUserHistory() === $this) {
-                $responsesHistory->setUserHistory(null);
+            if ($history->getUser() === $this) {
+                $history->setUser(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|Question[]
-     */
-    public function getQuestionHistory(): Collection
-    {
-        return $this->question_history;
-    }
-
-    public function addQuestionHistory(Question $questionHistory): self
-    {
-        if (!$this->question_history->contains($questionHistory)) {
-            $this->question_history[] = $questionHistory;
-            $questionHistory->setUserHistory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuestionHistory(Question $questionHistory): self
-    {
-        if ($this->question_history->removeElement($questionHistory)) {
-            // set the owning side to null (unless already changed)
-            if ($questionHistory->getUserHistory() === $this) {
-                $questionHistory->setUserHistory(null);
-            }
-        }
-
-        return $this;
-    }
 }

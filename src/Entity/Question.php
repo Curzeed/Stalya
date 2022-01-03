@@ -34,10 +34,7 @@ class Question
      */
     private $value;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="question_history")
-     */
-    private $user_history;
+
 
 
     public function __construct()
@@ -121,15 +118,4 @@ class Question
         return $i;
     }
 
-    public function getUserHistory(): ?User
-    {
-        return $this->user_history;
-    }
-
-    public function setUserHistory(?User $user_history): self
-    {
-        $this->user_history = $user_history;
-
-        return $this;
-    }
 }

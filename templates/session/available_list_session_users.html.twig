@@ -1,0 +1,13 @@
+{% extends 'main/index.html.twig' %}
+
+{% block title %}Liste des Sessions : {% endblock %}
+
+{% block content %}
+    {% for user in users_session %}
+        <div>
+            {{ user.username }}
+            <a href="{{ path('user_history', {'id': user.id}) }}">Voir son qcm</a>
+        </div>
+    {% endfor %}
+
+{% endblock %}

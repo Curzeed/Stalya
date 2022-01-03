@@ -5,3 +5,15 @@ body{
     padding: 0.3rem;
     margin-left: 2rem;
 }
+
+.correct_response {
+    color: lawngreen !important;
+}
+
+.bad_response {
+    color: red !important;
+}
+
+.correct_input {
+    color: green !important;
+}

@@ -1,0 +1,90 @@
+{% extends 'main/index.html.twig' %}
+
+{% block title %}Réponses : {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/styleMainQcm.css') }}">
+{% endblock %}
+
+{% block content %}
+    {% set i = 1 %}
+    {% for question in questions %}
+        <ul>
+{#            {% set idQuestion = [] %}#}
+{#            {% set idQuestion = idQuestion|merge([history.response.question.id]) %}#}
+
+            {% if question.countCorrect() > 1 %}
+                <h4 id="title_question">Q.{{ i }} - {{ question.label }}  (contient plusieurs bonnes réponses)</h4>
+
+            {% else %}
+                <h4 id="title_question">Q.{{ i }} - {{ question.label }}</h4>
+
+            {% endif %}
+            {% for reponse in question.reponses %}
+                {% set correct = reponse.isCorrect %}
+
+                {% if question.countCorrect() > 1 %}
+                    {% set isAnswered = (histories[question.id][reponse.id]).response.id is defined and (histories[question.id][reponse.id]).response.id == reponse.id %}
+                    {# checkbox #}
+                    <div class="checkboxResp spacing_rep">
+                        <input type="checkbox"
+                           class="checkbox_input" disabled
+                        {% if isAnswered %}
+                            checked
+                        {% endif %}
+                        >
+                        <label  class="
+                                {% if correct %}
+                                    correct_input
+                                {% endif %}
+                                {% if isAnswered and correct %}
+                                    correct_response
+                                {% endif %}
+                                {% if isAnswered and not correct %}
+                                    bad_response
+                                {% endif %}
+                                "
+                        >
+                            &nbsp;&nbsp;{{ reponse.label }}
+                        </label>
+                    </div>
+                {% else %}
+                    {% set isAnswered = histories[question.id].response.id == reponse.id %}
+                    {# radiobutton #}
+                    {% if answers['response_radio_' ~ question.id ] is defined and answers['response_radio_' ~ question.id] == reponse.id %}
+                        {% set checked = 'checked' %}
+                    {% endif %}
+
+                    <div class="radioResp spacing_rep">
+                        <input type="radio"
+                                class="radio_input" disabled
+                                {% if isAnswered %}
+                                    checked
+                                {% endif %}
+
+                        >
+                        <label for="response_radio_{{ reponse.id }}" class="
+                                {% if correct %}
+                                    correct_input
+                                {% endif %}
+                                {% if isAnswered and correct %}
+                                    correct_response
+                                {% endif %}
+                                {% if isAnswered and not correct %}
+                                    bad_response
+                                {% endif %}
+                                "
+                        >
+                            &nbsp; &nbsp;{{ reponse.label }}
+                        </label>
+                    </div>
+                {% endif %}
+            {% else %}
+                <span class="spacing_rep"> Cette question n'a pas de réponse</span>
+            {% endfor %}
+
+        </ul>
+        {% set i = i + 1  %}
+    {% endfor %}
+
+{% endblock %}

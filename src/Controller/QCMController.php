@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\History;
+use App\Repository\HistoryRepository;
 use App\Repository\QuestionRepository;
+use App\Repository\ReponsesRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +28,7 @@ class QCMController extends AbstractController
      * @Route ("/main_qcm", name="qcm_main")
      * @IsGranted("ROLE_USER")
      */
-    public function main(QuestionRepository $qr, Request $request, EntityManagerInterface $em) : Response{
+    public function main(QuestionRepository $qr, Request $request, EntityManagerInterface $em, ReponsesRepository $rr, HistoryRepository $hr) : Response{
         $user = $this->getUser();
         $atmDate = new DateTime('now');
         $questions = $qr->findAll();
@@ -62,16 +65,21 @@ class QCMController extends AbstractController
                     $this->addFlash('warning',"Vus n'avez pas répondu à toutes les questions");
                     return $this->render('qcm/main_qcm.html.twig', ['questions' => $tableauDeQuestions, 'answers' => $data, 'timer' => $request->get('timer')]);
                 }
-
+                $hr->deleteByUser($this->getUser());
                 foreach ($data as $reponse  => $value){
                     // Verif checkbox
                     if(str_starts_with($reponse,"question_")){
+                        $history = new History();
+                        $history->setUser($this->getUser());
                         $tabReponses = [];
                         $checkboxRes = explode('_', $reponse);
 
                         $questionId = $checkboxRes[1];
                         $reponseId = $checkboxRes[3];
                         $current_question = $tableauDeQuestions[$questionId];
+
+                        $response = $rr->find($reponseId);
+                        $history->setResponse($response);
 
                         // Array indexed by ID
                         foreach ($current_question->getReponses() as $rep){
@@ -84,14 +92,20 @@ class QCMController extends AbstractController
                                 $user->setScore($user->getScore()-$current_question->getValue()/$current_question->countCorrect());
                             }
                         }
+                        $em->persist($history);
                     }
                     // Verif radio
                     if(str_starts_with($reponse,"response_radio_")){
+                        $history = new History();
+                        $history->setUser($this->getUser());
                         $tabReponses = [];
                         $radioRes = explode('_',$reponse);
                         $questionId = $radioRes[2];
                         $reponseId = $value;
                         $current_question = $tableauDeQuestions[$questionId];
+
+                        $response = $rr->find($reponseId);
+                        $history->setResponse($response);
 
                         // Array indexed by ID
                         foreach ($current_question->getReponses() as $rep){
@@ -102,13 +116,10 @@ class QCMController extends AbstractController
                         } else {
                             $user->setScore($user->getScore()-$current_question->getValue());
                         }
+                        $em->persist($history);
                     }
                 }
-                //$user->addResponsesHistory($data);
-                //$user->addQuestionHistory($tableauDeQuestions);
-               // foreach ($question as $tableauDeQuestions){
-                 //   $user->addQuestionHistory($question);
-             //   }
+
 
                 $user->setLastAttempt($atmDate);
                 $user->setnbTry(0);
@@ -121,4 +132,6 @@ class QCMController extends AbstractController
 
         return $this->render('qcm/main_qcm.html.twig', ['questions' => $questions, 'answers' => []]);
     }
+
+
 }

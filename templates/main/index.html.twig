@@ -50,7 +50,7 @@
                 </a>
                 {% endif %}
                 {% if app.user %}
-                    <a href="{{ path('session_list_users') }}"
+                    <a href="{{ path('session_list') }}"
                        class="nav_link {% if app.request.attributes.get('_route') starts with 'session' %}active{% endif %}"
                        id="session ">
                         <i class='bx bx-bookmark nav_icon'></i>
