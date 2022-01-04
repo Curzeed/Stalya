@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'main/index.html.twig' %}
 
 {% block title %}
 
@@ -7,7 +7,7 @@
 {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/manage_account.css') }}">
 {% endblock %}
-{% block body %}
+{% block content %}
     <div class="container">
         <h1 class="text-center">Gestion de compte </h1>
         <div class="table-responsive">
@@ -70,7 +70,7 @@
     <div class="pagination justify-content-center">
     {% for i in 1..pagesCount %}
         <span>
-            <a href="{{ path('main_admin', {'page': i}) }}"
+            <a href="{{ path('admin_manage_account', {'page': i}) }}"
                 {% if i == current %}
                     class="pagination_current"
                 {% endif %}>

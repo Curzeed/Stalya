@@ -37,9 +37,14 @@ class Question
 
 
 
-    public function __construct()
+    public function __construct($data = [])
     {
         $this->reponses = new ArrayCollection();
+        foreach ($data as $property => $value) {
+            if (property_exists($this,$property)) {
+                $this->$property = $value;
+            }
+        }
     }
 
     public function getId(): ?int

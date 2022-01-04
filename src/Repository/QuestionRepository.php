@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,11 +23,12 @@ class QuestionRepository extends ServiceEntityRepository
 
     public function findbyRandomInTwenty(){
         return $this->createQueryBuilder('q')
-            ->select('q')
-            ->orderBy('q.id','')
-            ->setMaxResults(20)
-            ->getQuery()
-            ->getResult();
+                    ->addSelect('RAND() as HIDDEN rand')
+                    ->orderBy('rand()')
+                    ->setMaxResults(20)
+                    ->getQuery()
+                    ->getResult();
+
     }
 
     // /**

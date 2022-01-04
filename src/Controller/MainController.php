@@ -25,6 +25,10 @@ class MainController extends AbstractController
      * @Route("/liste", name="session_list")
      */
     public function listSession(SessionRepository $sr){
+        if(!$this->getUser()->canSignupToSession()) {
+            $this->addFlash('warning', 'Cassez vous');
+            return $this->redirectToRoute('main');
+        }
         return $this->render('session/available_session_user.html.twig', ['sessions' => $sr->findAll()]);
     }
     /**
@@ -32,10 +36,14 @@ class MainController extends AbstractController
      */
     public function signUpSession(Session $session, EntityManagerInterface $em) :  Response{
         $user = $this->getUser();
+        if(!$user->canSignupToSession()) {
+            $this->addFlash('warning', 'Cassez vous');
+            return $this->redirectToRoute('session_list');
+        }
         $session->addUser($user);
         $user->setSession($session);
         $em->flush();
-        return $this->redirectToRoute('session_list_users');
+        return $this->redirectToRoute('session_list');
     }
     /**
      * @Route ("/liste/{id}/users", name="session_list_users")

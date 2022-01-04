@@ -4,22 +4,42 @@
 
 {% block content %}
     <h1 class="text-center">Sessions disponibles </h1>
-    {% for session in sessions %}
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Session : </h5>
-                <p class="card-text">Session disponible à {{ session.date|date('d M y H:i:s', 'Europe/Paris') }}</p>
-                {% if session == app.user.session %}
-                <a href="{{ path('session_revoke', {'id' : session.id}) }}" class="btn btn-primary"> Se désister </a>
-                    {% else %}
-                <a href="{{ path('session_inscription', {'id' : session.id}) }}" class="btn btn-primary">S'inscrire  ({{session.user|length ~ '/' ~  session.nbplace }} inscrits)</a>
-
-                {% endif %}
-                {% if "ROLE_ADMIN" in app.user.roles %}
-                    <a href="{{ path('session_list_users',{'id' : session.id}) }}" class="btn btn-primary">Voir les utilisateurs</a>
-                {% endif%}
-            </div>
+    {% for message in app.flashes('warning') %}
+        <div class="flash-success">
+            <img src="https://c.tenor.com/iPPLJM-iQ-8AAAAC/julien-lepers-c-est-non.gif" height="100px" alt="">
+            {{ message }}
         </div>
     {% endfor %}
+    {% if app.user.discordId %}
+        <div class="row">
+            {% for session in sessions %}
+                <div class="card col-6" style="width: 18rem;margin-right: 20px;">
+                    <img class="card-img-top" src="https://dummyimage.com/400X220/000000/fff.png" alt="Card image cap">
+                    <div class="card-body ">
+                        <h5 class="card-title">Session : </h5>
+                        <p class="card-text">Session disponible
+                            à {{ session.date|date('d M y H:i:s', 'Europe/Paris') }}</p>
+                        {% if session == app.user.session %}
+                            <a href="{{ path('session_revoke', {'id' : session.id}) }}" class="btn btn-primary"> Se
+                                désister </a>
+                        {% else %}
+                            <a href="{{ path('session_inscription', {'id' : session.id}) }}" class="btn btn-primary">S'inscrire
+                                ({{ session.user|length ~ '/' ~  session.nbplace }} inscrits)</a>
+
+                        {% endif %}
+                        {% if "ROLE_ADMIN" in app.user.roles %}
+                            <a href="{{ path('session_list_users',{'id' : session.id}) }}" class="btn btn-primary">Voir
+                                les
+                                utilisateurs</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div>
+            Vous devez lier votre compte discord pour vous inscrire à une session !
+            <a href="{{ path('user_profile_discord_link') }}">d</a>
+        </div>
+    {% endif %}
 {% endblock %}

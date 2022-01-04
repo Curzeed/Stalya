@@ -4,11 +4,18 @@
 
 {% block stylesheets %}
     {{ parent() }}
+
 {% endblock %}
     {% block content %}
         <div class="container">
             {% for message in app.flashes('success') %}
                 <div class="flash-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('warning') %}
+                <div class="flash-success">
+                    <img src="https://c.tenor.com/iPPLJM-iQ-8AAAAC/julien-lepers-c-est-non.gif" height="100px" alt="">
                     {{ message }}
                 </div>
             {% endfor %}
@@ -22,7 +29,7 @@
                 <input type="text" id="dateOfBirth" disabled value="{{ app.user.dateNaissance|date('d/m/Y') }}">
                 <br>
                 <label for="email">E-mail : </label>
-                <input type="text" id="email" disabled value="{{ app.user.email }}">
+                <input type="text" id="emailInput" disabled value="{{ app.user.email }}">
                 <br>
                 <label for="last_attempt">Dernier essai : </label>
                 <input type="text" id="last_attempt" disabled value="{{ app.user.lastAttempt|date('d/m/Y h:m:s') }}">
@@ -74,10 +81,12 @@
                         {{ message }}
                     </div>
                 {% endfor %}
-                <button>Modifier mon mot de Passe</button>
+                <button class="btn btn-primary">Modifier mon mot de Passe</button>
                 {{ form_end(formModif) }}
             </div>
         </div>
+        <script src="{{ asset('assets/js/my_profil_script.js') }}">
+        </script>
         {% endblock %}
         {% block javascripts %}
             {{ parent() }}

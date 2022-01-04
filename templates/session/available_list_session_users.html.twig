@@ -7,6 +7,7 @@
         <div>
             {{ user.username }}
             <a href="{{ path('user_history', {'id': user.id}) }}">Voir son qcm</a>
+            Discord : <a href="discord://discord.com/users/{{ user.discordId }}">{{ user.usernameDiscord }}</a>
         </div>
     {% endfor %}
 

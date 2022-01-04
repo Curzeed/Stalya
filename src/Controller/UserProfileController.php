@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ModifyPasswordType;
+use App\Repository\SessionRepository;
 use App\Services\ServicesDiscord;
 use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
@@ -26,7 +27,6 @@ class UserProfileController extends AbstractController
             $session->set('discord_code', $_GET['code']);
             return $this->redirectToRoute('user_profile');
         }
-
         $user = $this->getUser();
         $formModif = $this->createForm(ModifyPasswordType::class);
 
@@ -50,15 +50,16 @@ class UserProfileController extends AbstractController
         if($session->get('discord_code')) {
             $code = $session->get('discord_code');
             $dsOauthProvider = new ServicesDiscord();
+            $session->remove('discord_code');
             try {
                 $token = $dsOauthProvider->tryGetToken($code);
                 $userInfos = $dsOauthProvider->getUserInfos($token['access_token']);
                 //dd( "https://cdn.discordapp.com/avatars/".$user->getId()."/".$user->getAvatarHash().'.gif');
                 $user->settokenDiscord($token['access_token']);
+                $user->setUsernameDiscord($userInfos['username'].'#'.$userInfos['discriminator']);
                 $user->setimgDiscord($userInfos['avatar']);
                 $user->setDiscordId($userInfos['id']);
                 $em->flush();
-                $session->remove('discord_code');
                 $this->addFlash('success', 'Compte lié à discord avec succès !');
                 $this->redirectToRoute('user_profile');
             } catch (IdentityProviderException $e) {
@@ -90,7 +91,12 @@ class UserProfileController extends AbstractController
     /**
      * @Route ("/profile/discord/revoke" , name="profile_revoke_discord")
      */
-    public function revokeTokenDiscord( EntityManagerInterface $em, ServicesDiscord $sd) :Response{
+    public function revokeTokenDiscord( EntityManagerInterface $em, ServicesDiscord $sd, SessionInterface $session) :Response{
+        if ($this->getUser()->getSession() !== null) {
+            $this->addFlash('warning', 'Vous êtes inscrit a une session');
+            return $this->redirectToRoute('user_profile');
+        }
+
         if($this->getUser()->getDiscordId() != null && $this->getUser()->gettokenDiscord() != null){
             $revokeURL = 'https://discordapp.com/api/oauth2/token/revoke';
             $sd->logout($revokeURL,array(
@@ -102,6 +108,8 @@ class UserProfileController extends AbstractController
             $this->getUser()->setDiscordId(null);
             $this->getUser()->settokenDiscord(null);
             $this->getUser()->setImgDiscord(null);
+            $this->getUser()->setUsernameDiscord(null);
+            $session->remove('discord_code');
             $em->flush();
             $this->addFlash('success','Compte discord délié avec succès');
 

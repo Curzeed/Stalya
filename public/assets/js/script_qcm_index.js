@@ -1,11 +1,8 @@
-var time_remaining = document.getElementById('remaining')
-console.log(document.getElementById('remaining'));
-var date = Date.parse(time_remaining.value)
-
-
 calculateTime()
 
 function calculateTime() {
+    var time_remaining = document.getElementById('remaining')
+    var date = Date.parse(time_remaining.value)
     var now = new Date()
     if( date - Date.parse(now) == 0) {
         window.location.reload()

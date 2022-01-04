@@ -18,6 +18,7 @@
         {% else %}
             <div class="header_img nav_logo_stalya"><img src="{{ asset('assets/img/stalya.png') }}" alt="profile_image">
             </div>
+
         {% endif %}
     {% else %}
         <div class="header_img"><a href=""></a></div>
@@ -35,19 +36,19 @@
                     <span class="nav_name">Dashboard</span>
                 </a>
                 {% if app.user %}
-                <a href="{{ path('user_profile') }}"
-                   class="nav_link {% if app.request.attributes.get('_route') starts with 'user_profile' %}active{% endif %}"
-                   id="manage_account">
-                    <i class='bx bx-user nav_icon'></i>
-                    <span class="nav_name">Gestion du compte</span>
+                    <a href="{{ path('user_profile') }}"
+                       class="nav_link {% if app.request.attributes.get('_route') starts with 'user_profile' %}active{% endif %}"
+                       id="manage_account">
+                        <i class='bx bx-user nav_icon'></i>
+                        <span class="nav_name">Gestion du compte</span>
 
-                </a>
-                <a href="{{ path('index_qcm') }}"
-                   class="nav_link {% if app.request.attributes.get('_route') starts with 'qcm_main' %}active{% endif %}"
-                   id="qcm">
-                    <i class='bx bx-list-check nav_icon'></i>
-                    <span class="nav_name">QCM</span>
-                </a>
+                    </a>
+                    <a href="{{ path('qcm_index') }}"
+                       class="nav_link {% if app.request.attributes.get('_route') starts with 'qcm' %}active{% endif %}"
+                       id="qcm">
+                        <i class='bx bx-list-check nav_icon'></i>
+                        <span class="nav_name">QCM</span>
+                    </a>
                 {% endif %}
                 {% if app.user %}
                     <a href="{{ path('session_list') }}"
@@ -107,13 +108,26 @@
         <div class="alert alert-success" role="alert">{{ success }}</div>
     {% endfor %}
     {% block content %}
+        {% block flashmessages %}
+            {% for message in app.flashes('success') %}
+                <div class="flash-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('warning') %}
+                <div class="flash-success">
+                    <img src="https://c.tenor.com/iPPLJM-iQ-8AAAAC/julien-lepers-c-est-non.gif" height="100px" alt="">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endblock %}
     {% endblock %}
 </div>
 <!--Container Main end-->
 {% endblock %}
 {% block footer %}
     <footer>
-        <div class="container-fluid">
+        <div class="container-fluid" style="position: absolute; bottom: 0">
             <div class="copyright">
                 <span class="span_copyright "> © 2020 - 2021. Toutes les images sont la propriétée de Rockstar North, Take-Two Interactive. Ce site n'est en aucun cas affilié à Rockstar North, Take-Two Interactive®.</span>
             </div>

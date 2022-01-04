@@ -104,6 +104,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $histories;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $username_discord;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
@@ -340,12 +345,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function canBeAddToSession(){
-        $res = false;
-        if($this->getScore() > 18){
-            $res = true;
+    public function canSignupToSession(){
+//        $res = false;
+//        if($this->getScore() > 18){
+//            $res = true;
+//        }
+//        return $res;
+
+        $countBadResponses = 0;
+        foreach ($this->getHistories() as $history) {
+            if (!$history->getResponse()->getIsCorrect()) {
+                $countBadResponses++;
+            }
         }
-        return $res;
+        return $countBadResponses <= 3;
     }
 
     /**
@@ -374,6 +387,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $history->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUsernameDiscord(): ?string
+    {
+        return $this->username_discord;
+    }
+
+    public function setUsernameDiscord(?string $username_discord): self
+    {
+        $this->username_discord = $username_discord;
 
         return $this;
     }

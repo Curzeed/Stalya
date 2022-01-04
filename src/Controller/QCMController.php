@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class QCMController extends AbstractController
 {
-    #[Route('/qcm', name: 'index_qcm')]
+    #[Route('/qcm', name: 'qcm_index')]
     public function index(): Response
     {
         return $this->render('qcm/index.html.twig', [
@@ -31,14 +31,14 @@ class QCMController extends AbstractController
     public function main(QuestionRepository $qr, Request $request, EntityManagerInterface $em, ReponsesRepository $rr, HistoryRepository $hr) : Response{
         $user = $this->getUser();
         $atmDate = new DateTime('now');
-        $questions = $qr->findAll();
+        $questions = $qr->findbyRandomInTwenty();
 
-        if ($user->canParticipate() || $user->getnbTry() >= 3) {
-            $user->setnbTry(0);
-            $user->setLastAttempt($atmDate);
-            $em->flush();
-            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-        }
+//        if ($user->canParticipate() || $user->getnbTry() >= 3) {
+//            $user->setnbTry(0);
+//            $user->setLastAttempt($atmDate);
+//            $em->flush();
+//            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+//        }
         $user->setnbTry($user->getnbTry()+1);
         $em->flush();
             if($request->getMethod() == 'POST'){
@@ -62,7 +62,7 @@ class QCMController extends AbstractController
                     $tableauDeQuestions[$question->getId()] = $question;
                 }
                 if ($emptyresponses > 0 && !array_key_exists('timeout',$data)) {
-                    $this->addFlash('warning',"Vus n'avez pas répondu à toutes les questions");
+                    $this->addFlash('warning',"Vous n'avez pas répondu à toutes les questions");
                     return $this->render('qcm/main_qcm.html.twig', ['questions' => $tableauDeQuestions, 'answers' => $data, 'timer' => $request->get('timer')]);
                 }
                 $hr->deleteByUser($this->getUser());
