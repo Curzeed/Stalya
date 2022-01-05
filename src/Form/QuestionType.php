@@ -30,10 +30,6 @@ class QuestionType extends AbstractType
                     'label'=>false,
                 ]
             )
-            ->add('value',IntegerType::class, [
-                'attr'=>['placeholder' => 'Mettre 1 de préférence', 'value'=>1],
-                'label'=>"Valeur de la question (pts attribués au candidat)",
-            ])
         ;
     }
 

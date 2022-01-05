@@ -1,14 +1,18 @@
-{% extends 'base.html.twig' %}
+{% extends 'main/index.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/styleRegister.css') }}">
 {% endblock %}
 {% block title %}Register{% endblock %}
 
-{% block body %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
+{% block content %}
+
+    {% block flashmessages %}
+        {{ parent() }}
+        {% for flashError in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+        {% endfor %}
+    {% endblock %}
     {{ form_start(registrationForm) }}
     <div class="container">
         <div class="formulaire">
@@ -26,7 +30,7 @@
                         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
                     {% endfor %}
                     <label for="dateNaissance">Date de naissance
-                        : </label> {{ form_widget(registrationForm.dateNaissance) }}
+                        : </label> {{ form_widget(registrationForm.birthDate) }}
                     <button type="submit" class="btn btn-primary">Register</button>
                     {{ form_end(registrationForm) }}
                 </div>

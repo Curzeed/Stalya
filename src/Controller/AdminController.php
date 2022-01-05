@@ -26,9 +26,14 @@ class AdminController extends AbstractController
     /**
      * @Route ("/manage_account/{page}", name="admin_manage_account")
      */
-    public function account (UserRepository $ur, $page = 1) {
+    public function account (Request $request,UserRepository $ur, $page = 1) {
 
-        $pageSize = '1';
+        if($request->getMethod() == 'GET' && $request->get('nbPage') !== null){
+            $pageSize = $request->get('nbPage');
+        }else{
+            $pageSize = '10';
+        }
+
 
         $query = $ur->createQueryBuilder('u')
             ->orderBy('u.id', 'DESC')
@@ -74,5 +79,16 @@ class AdminController extends AbstractController
         }
         $em->flush();
         return $this->redirectToRoute('main_admin');
+    }
+
+    /**
+     * @Route ("/api/filter_accounts", name="filter_users")
+     */
+    public function filterUsers(UserRepository $ur, Request $request) {
+        $users = $ur->getUsersBySearch($request->get('search'));
+
+        return $this->render('admin/_users_tab.html.twig', [
+            'users' => $users
+        ]);
     }
 }

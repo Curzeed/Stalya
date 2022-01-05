@@ -26,7 +26,7 @@ class MainController extends AbstractController
      */
     public function listSession(SessionRepository $sr){
         if(!$this->getUser()->canSignupToSession()) {
-            $this->addFlash('warning', 'Cassez vous');
+            $this->addFlash('warning', 'Vous avez fait trop d\'erreurs au qcm vous n\'avez pas accès aux sessions ! ');
             return $this->redirectToRoute('main');
         }
         return $this->render('session/available_session_user.html.twig', ['sessions' => $sr->findAll()]);
@@ -37,7 +37,7 @@ class MainController extends AbstractController
     public function signUpSession(Session $session, EntityManagerInterface $em) :  Response{
         $user = $this->getUser();
         if(!$user->canSignupToSession()) {
-            $this->addFlash('warning', 'Cassez vous');
+            $this->addFlash('warning', 'Vous avez fait trop d\'erreurs au qcm vous n\'avez pas accès aux sessions ! ');
             return $this->redirectToRoute('session_list');
         }
         $session->addUser($user);

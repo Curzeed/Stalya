@@ -49,14 +49,14 @@
                         <i class='bx bx-list-check nav_icon'></i>
                         <span class="nav_name">QCM</span>
                     </a>
-                {% endif %}
-                {% if app.user %}
+                {% if app.user.fail %}
                     <a href="{{ path('session_list') }}"
                        class="nav_link {% if app.request.attributes.get('_route') starts with 'session' %}active{% endif %}"
                        id="session ">
                         <i class='bx bx-bookmark nav_icon'></i>
                         <span class="nav_name">Session</span>
                     </a>
+                {% endif %}
                 {% endif %}
                 <a href="#" class="nav_link" id="informations">
                     <i class='bx bx-info-circle nav_icon'></i>

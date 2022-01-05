@@ -33,12 +33,12 @@ class QCMController extends AbstractController
         $atmDate = new DateTime('now');
         $questions = $qr->findbyRandomInTwenty();
 
-//        if ($user->canParticipate() || $user->getnbTry() >= 3) {
-//            $user->setnbTry(0);
-//            $user->setLastAttempt($atmDate);
-//            $em->flush();
-//            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-//        }
+        if (!$user->canParticipate() || $user->getnbTry() >= 3) {
+            $user->setnbTry(0);
+            $user->setLastAttempt($atmDate);
+            $em->flush();
+            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+        }
         $user->setnbTry($user->getnbTry()+1);
         $em->flush();
             if($request->getMethod() == 'POST'){
@@ -86,10 +86,8 @@ class QCMController extends AbstractController
                             $tabReponses[$rep->getId()] = $rep;
                         }
                         if(in_array($reponseId,$tabReponses)){
-                            if($tabReponses[$reponseId]->getIsCorrect() == true){
-                                $user->setScore($user->getScore()+$current_question->getValue()/$current_question->countCorrect());
-                            } else {
-                                $user->setScore($user->getScore()-$current_question->getValue()/$current_question->countCorrect());
+                            if($tabReponses[$reponseId]->getIsCorrect() !== true){
+                                $user->setFail($user->getFail() + 1);
                             }
                         }
                         $em->persist($history);
@@ -111,10 +109,8 @@ class QCMController extends AbstractController
                         foreach ($current_question->getReponses() as $rep){
                             $tabReponses[$rep->getId()] = $rep;
                         }
-                        if($tabReponses[$reponseId]->getIsCorrect() == true){
-                            $user->setScore($user->getScore()+$current_question->getValue());
-                        } else {
-                            $user->setScore($user->getScore()-$current_question->getValue());
+                        if($tabReponses[$reponseId]->getIsCorrect() !== true){
+                            $user->setFail($user->getFail() + 1);
                         }
                         $em->persist($history);
                     }

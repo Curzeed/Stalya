@@ -40,14 +40,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $dateNaissance;
+    private $birth_date;
 
     /**
      * @ORM\Column(type="boolean")
@@ -60,9 +60,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $tokenMail;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer" , nullable=true)
      */
-    private $score;
+    private $fail;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -213,14 +213,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDateNaissance(): ?\DateTimeInterface
+    public function getBirthDate(): ?\DateTimeInterface
     {
-        return $this->dateNaissance;
+        return $this->birth_date;
     }
 
-    public function setDateNaissance(\DateTimeInterface $dateNaissance): self
+    public function setBirthDate(\DateTimeInterface $birth_date): self
     {
-        $this->dateNaissance = $dateNaissance;
+        $this->birth_date = $birth_date;
 
         return $this;
     }
@@ -249,17 +249,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getScore(): ?int
+    /**
+     * @return mixed
+     */
+    public function getFail()
     {
-        return $this->score;
+        return $this->fail;
     }
 
-    public function setScore(int $score): self
+    /**
+     * @param mixed $fail
+     */
+    public function setFail($fail): void
     {
-        $this->score = $score;
-
-        return $this;
+        $this->fail = $fail;
     }
+
 
     public function getLastAttempt(): ?\DateTimeInterface
     {
@@ -346,12 +351,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
     public function canSignupToSession(){
-//        $res = false;
-//        if($this->getScore() > 18){
-//            $res = true;
-//        }
-//        return $res;
-
         $countBadResponses = 0;
         foreach ($this->getHistories() as $history) {
             if (!$history->getResponse()->getIsCorrect()) {

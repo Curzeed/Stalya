@@ -1,67 +1,53 @@
 {% extends 'main/index.html.twig' %}
 
 {% block title %}
-
+Gestion des Comptes
 {% endblock %}
 {% block stylesheets %}
 {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/manage_account.css') }}">
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
 {% block content %}
     <div class="container">
         <h1 class="text-center">Gestion de compte </h1>
+        <form action="{{ path('admin_manage_account' ,{'page' : 1}) }}" method="get">
+            <div class="nbUserPage">
+                <h5>Afficher un nombre d'utilisateurs par page : </h5>
+                <select name="nbPage" id="nbPage_users" onchange="submit()">
+                    <option value="">Veuillez saisir le montant :</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </form>
+        <label for="research_input">Recherche : </label>
+        <input type="text" name="research" id="research_input" onkeyup="myFunction()" placeholder="Recherche par pseudo">
         <div class="table-responsive">
-            <table class="table table-light table-striped me-md-3">
+            <table class="table table-light table-striped me-md-3" id="myTable">
                 <thead class="table-dark">
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Pseudo</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Rôle</th>
                     <th scope="col">Date de Naissance</th>
                     <th scope="col">Vérifié</th>
-                    <th scope="col">Score</th>
+                    <th scope="col">Erreurs</th>
                     <th scope="col">Dernière tentative</th>
+                    <th scope="col">IdDiscord</th>
+                    <th scope="col">Discord</th>
                     <th scope="col">Supprimer</th>
                     <th scope="col">Upgrade</th>
                 </tr>
                 </thead>
-                <tbody>
-                {% for user in users %}
-                    <tr>
-                        <th scope="row">{{ user.id }}</th>
-                        <th scope="row">{{ user.username }}</th>
-                        <th scope="row">{{ user.email }}</th>
-                        {% if user.roles[0] == 'ROLE_ADMIN' %}
-                            <th scope="row"><i class="fas fa-user-shield"></i></th>
-                        {% else %}
-                            <th scope="row"><i class="fas fa-user"></i></th>
-                        {% endif %}
+                <tbody id="users_tab">
 
-                        <th scope="row">{{ user.dateNaissance|date("d/m/Y") }}</th>
-                        {% if user.verified == true %}
-                            <th scope="row"><i class="fas fa-check"></i></th>
-                            {% else %}
-                            <th scope="row"><i class="fas fa-times"></i></th>
-                        {% endif %}
-
-                        <th scope="row">{{ user.score }}</th>
-                        {% if user.lastAttempt is not defined %}
-                            <th scope="row">Pas d'essais</th>
-                        {% endif %}
-                        <th scope="row">{{ user.lastAttempt|date("d/m/Y/h:m:s")  }}</th>
-                        <th scope="row"><a href="{{ path('admin_delete', {'id': user.id}) }}" onclick="return confirm('Êtes vous sûr de supprimer cet utilisateur ?')"><i class="fas fa-trash-alt"></i></a></th>
-                            {% if user.roles[0] == 'ROLE_ADMIN' %}
-                                    <th scope="row"><a href="{{ path('admin_upgrade', {'id' : user.id}) }}" onclick="return confirm('Êtes vous sûr de passer cet administrateur en utilisateur ?')"><i class="fas fa-user-minus"></i></a> </th>
-                                {% else %}
-                                    <th scope="row"><a href="{{ path('admin_upgrade', {'id' : user.id}) }}" onclick="return confirm('Êtes vous sûr de passer cet utilisateur administrateur ?')"><i class="fas fa-user-plus"></i></a> </th>
-                            {% endif %}
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3">Aucun utilisateur trouvés</td>
-                    </tr>
-                {% endfor %}
+                {{ include('admin/_users_tab.html.twig', {'users': users}) }}
 
                 </tbody>
             </table>
@@ -79,6 +65,43 @@
         </span>
     {% endfor %}
     </div>
+    <script>
+        function myFunction() {
+            // // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("research_input");
+            filter = input.value
+            table = document.getElementById('users_tab')
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('filter_users') }}',
+                data: 'search='+filter,
+                success: (data) => {
+                    table.innerHTML = data
+                },
+                error : (data) => {
+
+                },
+            })
+
+            // table = document.getElementById("myTable");
+            // tr = table.getElementsByTagName("tr");
+            //
+            // for (i = 0; i < tr.length; i++) {
+            //     td = tr[i].getElementsByTagName("td")[1];
+            //     if (td) {
+            //         txtValue = td.textContent || td.innerText;
+            //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            //             tr[i].style.display = "";
+            //         } else {
+            //             tr[i].style.display = "none";
+            //         }
+            //     }
+            // }
+
+
+        }
+    </script>
 
 {% endblock %}
 

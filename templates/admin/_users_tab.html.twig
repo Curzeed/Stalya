@@ -1,0 +1,42 @@
+{% for user in users %}
+    <tr>
+        <td scope="row">{{ user.username }}</td>
+        <td scope="row">{{ user.email }}</td>
+        {% if user.roles[0] == 'ROLE_ADMIN' %}
+            <td scope="row"><i class="fas fa-user-shield"></i></td>
+        {% else %}
+            <td scope="row"><i class="fas fa-user"></i></td>
+        {% endif %}
+
+        <td scope="row">{{ user.birthDate|date("d/m/Y") }}</td>
+        {% if user.verified == true %}
+            <td scope="row"><i class="fas fa-check"></i></td>
+        {% else %}
+            <td scope="row"><i class="fas fa-times"></i></td>
+        {% endif %}
+
+        <td scope="row">{{ user.fail }}</td>
+        {% if user.lastAttempt is not defined %}
+            <td scope="row">Pas d'essais</td>
+        {% endif %}
+        <td scope="row">{{ user.lastAttempt|date("d/m/Y/h:m:s") }}</td>
+        <td> {{ user.discordId }}</td>
+        <td><a href="discord://discord.com/users/{{ user.discordId }}">{{ user.usernameDiscord }}</a></td>
+        <td scope="row"><a href="{{ path('admin_delete', {'id': user.id}) }}"
+                           onclick="return confirm('Êtes vous sûr de supprimer cet utilisateur ?')"><i
+                        class="fas fa-trash-alt"></i></a></td>
+        {% if user.roles[0] == 'ROLE_ADMIN' %}
+            <td scope="row"><a href="{{ path('admin_upgrade', {'id' : user.id}) }}"
+                               onclick="return confirm('Êtes vous sûr de passer cet administrateur en utilisateur ?')"><i
+                            class="fas fa-user-minus"></i></a></td>
+        {% else %}
+            <td scope="row"><a href="{{ path('admin_upgrade', {'id' : user.id}) }}"
+                               onclick="return confirm('Êtes vous sûr de passer cet utilisateur administrateur ?')"><i
+                            class="fas fa-user-plus"></i></a></td>
+        {% endif %}
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="3">Aucun utilisateur trouvés</td>
+    </tr>
+{% endfor %}

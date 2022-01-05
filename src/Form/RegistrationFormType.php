@@ -40,7 +40,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('dateNaissance',BirthdayType::class,[
+            ->add('birthDate',BirthdayType::class,[
                 'placeholder' => [
                     'year' => "Année", 'month' => "Mois", "day" => "Jour"
                 ],
