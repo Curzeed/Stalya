@@ -9,6 +9,7 @@ use App\Repository\SessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -87,5 +88,27 @@ class MainController extends AbstractController
         $session->removeUser($user);
         $em->flush();
         return $this->redirectToRoute('session_list');
+    }
+
+    /**
+     * @IsGranted ("ROLE_ADMIN")
+     * @Route ("/session/admission/{id}", name="session_admitted")
+     */
+    public function admitUser(  EntityManagerInterface $em,Request $request, User $user){
+        if($request->getMethod() == "POST"){
+            if($request->get('admit') == "admitted" ) {
+                $user->setAdmis(true);
+                $user->setComment($request->get('comment'));
+            }if($request->get('admit') == "refused" ){
+                $user->setAdmis(false);
+                $user->setComment($request->get('comment'));
+            }
+            $this->addFlash('success',"Le joueur ".$user->getUsername()." a bien reçu son commentaire ");
+            $em->flush();
+            return $this->redirectToRoute('session_list');
+        }
+        return $this->render('session/admitUser.html.twig', [
+            'user' => $user
+        ]);
     }
 }

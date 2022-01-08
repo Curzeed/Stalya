@@ -1,7 +1,11 @@
+{% set i = 0 %}
 {% for user in users %}
     <tr>
         <td scope="row">{{ user.username }}</td>
-        <td scope="row">{{ user.email }}</td>
+        <td scope="row"><a type="button" class="" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ i }}">
+                {{ user.email }}
+            </a></td>
+
         {% if user.roles[0] == 'ROLE_ADMIN' %}
             <td scope="row"><i class="fas fa-user-shield"></i></td>
         {% else %}
@@ -35,8 +39,45 @@
                             class="fas fa-user-plus"></i></a></td>
         {% endif %}
     </tr>
+
+    <div class="modal fade" id="staticBackdrop{{ i }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{ i }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel{{ i }}">Infos de : {{ user.username }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="idUser">Id :</label><span id="idUser">{{ user.id }}</span><br>
+                    <label for="username">Pseudo :</label><span id="username">{{ user.username }}</span><br>
+                    <label for="emailUser">E-Mail :</label><span id="emailUser">{{ user.email }}</span><br>
+                    <label for="birthDate">Date de naissance :</label><span id="birthDate">{{ user.birthDate|date("d/m/Y")}}</span><br>
+                    <label for="lastAttempt">Dernier essai :</label><span id="lastAttempt">{{ user.lastAttempt|date("d/m/Y h:m") }}</span><br>
+                    <label for="discordId">Discord id :</label><span id="idUser">{{ user.discordId }}</span><br>
+                    <label for="usernameDiscord">Pseudo discord :</label><span id="usernameDiscord">{{ user.usernameDiscord }}</span><br>
+                    <label for="fails">Nombre d'erreurs : </label><span id="fails">{{ user.fail }}</span><br>
+                    <label for="comment">Commentaire :</label><span id="comment">{{ user.comment }}</span><br>
+                    <label for="admitted">Est admis :</label>
+                    {% if user.admis %}
+                        <span id="admitted"><i class="fas fa-check"></i></span>
+                        {% else %}
+                        <span id="admitted"><i class="fas fa-times"></i></span>
+                    {% endif %}
+                    <br>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% set i = i + 1 %}
 {% else %}
     <tr>
         <td colspan="3">Aucun utilisateur trouvés</td>
     </tr>
+
 {% endfor %}
+
+<!-- Modal -->

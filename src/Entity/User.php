@@ -109,6 +109,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $username_discord;
 
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $comment;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $Admis;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
@@ -398,6 +408,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsernameDiscord(?string $username_discord): self
     {
         $this->username_discord = $username_discord;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getAdmis(): ?bool
+    {
+        return $this->Admis;
+    }
+
+    public function setAdmis(?bool $Admis): self
+    {
+        $this->Admis = $Admis;
 
         return $this;
     }

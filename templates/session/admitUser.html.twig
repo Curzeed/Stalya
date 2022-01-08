@@ -1,0 +1,18 @@
+{% extends 'main/index.html.twig' %}
+
+{% block title %}Edit Session{% endblock %}
+
+{% block content %}
+    <h1>Admission de  l'utilisateur : {{ user.username }}</h1>
+
+    <form action="{{ path('session_admitted', {'id' : user.id}) }}" method="post">
+        <label for="comment">Commentaire</label>
+        <textarea type="" id="comment" maxlength="1000" name="comment"> </textarea>
+        <label for="admitted">Resultat : </label>
+        <input type="radio" name="admit" value="admitted" id="admitted">
+        <label for="admitted">Admis </label>
+        <input type="radio" name="admit" value="refused" id="refused">
+        <label for="refused">Refusé</label>
+        <button type="submit" onclick="return confirm('Êtes vous sûr de vouloir confirmer ?')">Envoyer </button>
+    </form>
+{% endblock %}

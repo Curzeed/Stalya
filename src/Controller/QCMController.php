@@ -33,17 +33,16 @@ class QCMController extends AbstractController
         $atmDate = new DateTime('now');
         $questions = $qr->findbyRandomInTwenty();
 
-        if (!$user->canParticipate() || $user->getnbTry() >= 3) {
-            $user->setnbTry(0);
-            $user->setLastAttempt($atmDate);
-            $em->flush();
-            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-        }
+//        if (!$user->canParticipate() || $user->getnbTry() >= 3) {
+//            $user->setnbTry(0);
+//            $user->setLastAttempt($atmDate);
+//            $em->flush();
+//            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+//        }
         $user->setnbTry($user->getnbTry()+1);
         $em->flush();
             if($request->getMethod() == 'POST'){
                 $tableauDeQuestions = [];
-                $user->setScore(0);
                 $data = $request->request->all();
                 $emptyresponses = 0;
                 foreach ($questions as $question){
