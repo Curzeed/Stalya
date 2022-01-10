@@ -23,4 +23,3 @@ function calculateTime() {
     timer.innerHTML = `${leadingZero(days)}:${leadingZero(hours)}:${leadingZero(minutes)}:${leadingZero(seconds)}`;
     setTimeout(calculateTime, 1000)
 }
-dz
