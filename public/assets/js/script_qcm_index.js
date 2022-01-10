@@ -1,28 +1,26 @@
 calculateTime()
 
 function calculateTime() {
-    var time_remaining = document.getElementById('remaining')
-    var date = Date.parse(time_remaining.value)
-    var now = new Date()
-    if( date - Date.parse(now) == 0) {
-        window.location.reload()
-    }
-    time = convertHMS(date - Date.parse(now))
+    const nextDate = new Date(document.getElementById('remaining').value);
+    const now = new Date();
+    const timer = document.getElementById('timer')
 
-    timer = document.getElementById('timer')
-    timer.innerHTML = time
+    let diff = nextDate > now ?
+        nextDate.getTime() - now.getTime() :
+        now.getTime() - nextDate.getTime();
+
+    const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+    diff -= days * 1000 * 60 * 60 * 24;
+    const hours = Math.floor(diff / 1000 / 60 / 60);
+    diff -= hours * 1000 * 60 * 60;
+    const minutes = Math.floor(diff / 1000 / 60);
+    diff -= minutes * 1000 * 60;
+    const seconds = Math.floor(diff / 1000);
+
+    if(diff === 0)
+        window.location.reload();
+
+    timer.innerHTML = `${leadingZero(days)}:${leadingZero(hours)}:${leadingZero(minutes)}:${leadingZero(seconds)}`;
     setTimeout(calculateTime, 1000)
 }
-
-function convertHMS(value) {
-    let sec = parseInt(value, 10); // convert value to number if it's string
-    sec = sec/1000
-    let hours   = Math.floor(sec / 3600); // get hours
-    let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
-    let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    return hours+':'+minutes+':'+seconds; // Return is HH : MM : SS
-}
-
+dz

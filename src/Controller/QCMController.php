@@ -19,9 +19,7 @@ class QCMController extends AbstractController
     #[Route('/qcm', name: 'qcm_index')]
     public function index(): Response
     {
-        return $this->render('qcm/index.html.twig', [
-            'controller_name' => 'QCMController',
-        ]);
+        return $this->render('qcm/index.html.twig');
     }
 
     /**

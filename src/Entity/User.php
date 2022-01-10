@@ -332,7 +332,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $atmDate = new \DateTime('now');
         if($this->getLastAttempt() != null){
             $lastAttempt = $this->getLastAttempt();
-            return $lastAttempt->modify('+24 hour') > $atmDate;
+            return $lastAttempt > $atmDate;
         }
         return true;
     }
