@@ -1,5 +1,9 @@
 calculateTime()
 
+function leadingZero(number) {
+    return String(number).padStart(2, '0');
+}
+
 function calculateTime() {
     const nextDate = new Date(document.getElementById('remaining').value);
     const now = new Date();
