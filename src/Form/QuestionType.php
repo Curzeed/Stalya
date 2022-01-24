@@ -20,9 +20,9 @@ class QuestionType extends AbstractType
         $builder
             ->add('label')
             ->add('reponses',CollectionType::class, [
-                    // each entry in the array will be an "email" field
+                    // each entry in the array will be an "response" field
                     'entry_type' => ReponsesType::class,
-                    // these options are passed to each "email" type
+                    // these options are passed to each "responses" type
                     'entry_options' => [
                         'attr' => ['class' => 'response_box'],
                     ],

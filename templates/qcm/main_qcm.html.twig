@@ -18,7 +18,7 @@
         </p>
         <form id="qcm_form" action="{{ path('qcm_main') }}" method="post">
             {% set i = 1 %}
-            <input type="hidden" name="timer" id="input_timer" value="{{ timer ?? 900 }}">
+            <input type="hidden" name="timer" id="input_timer" value="{{ timer ?? 99900 }}">
             {% for question in questions %}
                 <ul>
                     {% if question.countCorrect() > 1 %}
@@ -65,8 +65,9 @@
             <button type="submit" id="btn  btn-submit btn-primary">Envoyer</button>
         </form>
     </div>
+    <script src="{{ asset('assets/js/script_qcm_main.js') }}"></script>
+{% endblock %}
     {% block javascripts %}
         {{ parent() }}
-        <script src="{{ asset('assets/js/script_qcm_main.js') }}"></script>
+
     {% endblock %}
-{% endblock %}

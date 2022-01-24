@@ -37,15 +37,14 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                {% if  app.user.canParticipate == false %}
+                                {% if  app.user.canParticipate() == false %}
                                     <p>
                                         Vous devez attendre avant de pouvoir retenter le qcm
                                         <br>
-                                        Cassez vous
                                     </p>
                                     <p>
                                         <input id="remaining" type="hidden"
-                                               value="{% if not app.user.getLastAttempt %} 0 {% else %}{{ app.user.getLastAttempt|date_modify('+ 24 hours').format('d M Y H:i:s') }} {% endif %}">
+                                               value="{% if app.user.canParticipate %} 0 {% else %}{{ app.user.getLastAttempt|date_modify('+ 24 hours').format('d M Y H:i:s') }} {% endif %}">
                                         Temps restant : <span id="timer"></span>
                                     </p>
                                     <div class="modal-footer">

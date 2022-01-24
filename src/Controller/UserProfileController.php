@@ -54,7 +54,6 @@ class UserProfileController extends AbstractController
             try {
                 $token = $dsOauthProvider->tryGetToken($code);
                 $userInfos = $dsOauthProvider->getUserInfos($token['access_token']);
-                //dd( "https://cdn.discordapp.com/avatars/".$user->getId()."/".$user->getAvatarHash().'.gif');
                 $user->settokenDiscord($token['access_token']);
                 $user->setUsernameDiscord($userInfos['username'].'#'.$userInfos['discriminator']);
                 $user->setimgDiscord($userInfos['avatar']);
@@ -72,12 +71,11 @@ class UserProfileController extends AbstractController
 
     /**
      * @Route("/profile/link", name="user_profile_discord_link")
-     *
      */
     public function linkDiscord(EntityManagerInterface $em) : Response{
         $provider = new \Wohali\OAuth2\Client\Provider\Discord([
-            'clientId' => '920981831384440843',
-            'clientSecret' => 'ablnGro0-LICBWQX67JpVtb3iHVGOHMv',
+            'clientId' => $_SERVER['DISCORD_CLIENT_ID'],
+            'clientSecret' => $_SERVER['DISCORD_CLIENT_SECRET'],
             'redirectUri' => 'http://localhost:8000/profile'
         ]);
         $authUrl = $provider->getAuthorizationUrl([

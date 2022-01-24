@@ -31,18 +31,20 @@ class QCMController extends AbstractController
         $atmDate = new DateTime('now');
         $questions = $qr->findbyRandomInTwenty();
 
-//        if (!$user->canParticipate() || $user->getnbTry() >= 3) {
-//            $user->setnbTry(0);
-//            $user->setLastAttempt($atmDate);
-//            $em->flush();
-//            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-//        }
+        if ($user->canParticipate() === false || $user->getnbTry() >= 3) {
+            $user->setnbTry(0);
+            $user->setLastAttempt($atmDate);
+            $em->flush();
+            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+        }
         $user->setnbTry($user->getnbTry()+1);
         $em->flush();
+        // Récupération du formulaire
             if($request->getMethod() == 'POST'){
                 $tableauDeQuestions = [];
                 $data = $request->request->all();
                 $emptyresponses = 0;
+                // Construction du tableau des questions du qcm.
                 foreach ($questions as $question){
                     if ($question->countCorrect() <= 1 ) {
                         $answered = array_key_exists('response_radio_'.$question->getId(), $data);
@@ -70,7 +72,6 @@ class QCMController extends AbstractController
                         $history->setUser($this->getUser());
                         $tabReponses = [];
                         $checkboxRes = explode('_', $reponse);
-
                         $questionId = $checkboxRes[1];
                         $reponseId = $checkboxRes[3];
                         $current_question = $tableauDeQuestions[$questionId];
