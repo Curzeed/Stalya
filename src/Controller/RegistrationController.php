@@ -91,4 +91,28 @@ class RegistrationController extends AbstractController
         $this->addFlash('success',"Votre e-mail a bien été vérifié !");
         return $this->redirectToRoute('app_login');
     }
+
+    /**
+     * @Route ("verify/email/{email}", name="verify_email")
+     */
+    public function verifyEmail($email, UserRepository $ur) : Response
+    {
+        $users = $ur->findAll();
+        $tabEmails = [];
+        foreach ($users as $user){
+            $tabEmails[$user->getId()] = $user->getEmail();
+        }
+        return $this->json(in_array($email,$tabEmails));
+    }
+    /**
+     * @Route ("verify/username/{username}", name="verify_username")
+     */
+    public function verifyUsername($username, UserRepository $ur) : Response{
+        $users= $ur->findAll();
+        $tabUsername = [];
+        foreach ($users as $user){
+            $tabUsername[$user->getId()] = strtolower($user->getUsername());
+        }
+        return $this->json(in_array($username,$tabUsername));
+    }
 }

@@ -49,7 +49,7 @@
                         <i class='bx bx-list-check nav_icon'></i>
                         <span class="nav_name">QCM</span>
                     </a>
-                {% if app.user.fail  < 3%}
+                {% if app.user.fail < 3%}
                     <a href="{{ path('session_list') }}"
                        class="nav_link {% if app.request.attributes.get('_route') starts with 'session' %}active{% endif %}"
                        id="session ">

@@ -33,6 +33,7 @@ class QCMController extends AbstractController
 
         if ($user->canParticipate() === false || $user->getnbTry() >= 3) {
             $user->setnbTry(0);
+            $user->setFail(20);
             $user->setLastAttempt($atmDate);
             $em->flush();
             return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
@@ -41,6 +42,7 @@ class QCMController extends AbstractController
         $em->flush();
         // Récupération du formulaire
             if($request->getMethod() == 'POST'){
+                $user->setFail(0);
                 $tableauDeQuestions = [];
                 $data = $request->request->all();
                 $emptyresponses = 0;

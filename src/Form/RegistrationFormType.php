@@ -44,7 +44,8 @@ class RegistrationFormType extends AbstractType
                 'placeholder' => [
                     'year' => "Année", 'month' => "Mois", "day" => "Jour"
                 ],
-                'format' => "dd-MM-yyyy"
+                'format' => "dd-MM-yyyy",
+                'years' => range(date('Y'),(int) date('Y') - 80),
             ])
         ;
     }

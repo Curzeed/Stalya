@@ -2,3 +2,7 @@ body{
     background-color : whitesmoke;
     font-family: 'Merriweather Sans', sans-serif;
 }
+.spin{
+    -webkit-animation: fa-spin 2s linear infinite;
+    animation: fa-spin 2s linear infinite;
+}
