@@ -15,7 +15,7 @@ function verifyUsername(){
     let span = document.createElement('span');
     let labelUsername = document.getElementById('username');
     let urlUsernameVerify = document.getElementById('usernameUrl').value.replace('test',str);
-    console.log(str)
+
     if(str.includes(' ') || str.trim().length === 0){
         labelUsername.firstElementChild.remove()
         btnConfirm.disabled = true;
@@ -37,21 +37,17 @@ function verifyUsername(){
             username.addEventListener('change', function (){
                 if(labelUsername.childElementCount > 1){
                     labelUsername.firstElementChild.remove();
-                }
-            })
+                }})
         }
+
         fetchAsync().then()
         btnConfirm.disabled = false;
     }else{
         span.innerHTML = "<i class='bx bx-no-entry'>4 Caractères minimum</i>"
         btnConfirm.disabled = true;
-
     }
     labelUsername.appendChild(span);
-    if(labelUsername.childElementCount > 1){
-        labelUsername.firstElementChild.remove();
-    }
-
+    deleteChild(labelUsername);
 }
 function verifyPassword(){
     let str = password.value
@@ -65,22 +61,21 @@ function verifyPassword(){
         span.innerHTML += "<i class='bx bx-check-circle' ></i>";
         btnConfirm.disabled = false;
     }
-
     labelMdp.appendChild(span);
-
-    if(labelMdp.childElementCount > 1){
-        document.getElementById('password').firstElementChild.remove();
-    }
-
+    deleteChild(labelMdp);
 }
 function verifyEmail(){
     let str = email.value
     let span = document.createElement('span');
     let labelEmail = document.getElementById('labelEmail');
     let urlEmailVerify = document.getElementById('emailUrl').value.replace('test',str);
+
     if(!str.includes('@') || str === '' || str.trim().length === 0){
-       if(labelEmail.childElementCount < 1)labelEmail.firstElementChild.remove();
+       deleteChild(labelEmail)
        btnConfirm.disabled = true;
+       span.innerHTML = "<i class='bx bx-no-entry'>E-mail invalide</i>";
+       labelEmail.appendChild(span);
+       deleteChild(labelEmail)
        return;
     }
     async function fetchAsync(){
@@ -96,18 +91,28 @@ function verifyEmail(){
     }
     fetchAsync().then()
     labelEmail.appendChild(span);
-    if(labelEmail.childElementCount > 1){
-        document.getElementById('labelEmail').firstElementChild.remove();
-    }
+    deleteChild(labelEmail)
 }
 function verifyConfirmPassword(){
     let str = confirmPassword.value
     let span = document.createElement('span');
     let labelMdp = document.getElementById('confirmPassword');
+    deleteChild(labelMdp)
     if(str.length  === 0){
         labelMdp.firstElementChild.remove();
     }
     if(password.value !== str){
-
+        span.innerHTML += "<i class='bx bx-no-entry' > Les mots de passes de correspondent pas</i>";
+        btnConfirm.disabled = true;
+    }if(password.value === str){
+        span.innerHTML += "<i class='bx bx-check-circle' ></i>";
+        btnConfirm.disabled = false;
+    }
+    labelMdp.appendChild(span);
+    deleteChild(labelMdp)
+}
+function deleteChild(label){
+    if(label.childElementCount > 1){
+        label.firstElementChild.remove();
     }
 }
