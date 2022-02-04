@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function Symfony\Component\Translation\t;
 
 class UserProfileController extends AbstractController
@@ -76,7 +77,7 @@ class UserProfileController extends AbstractController
         $provider = new \Wohali\OAuth2\Client\Provider\Discord([
             'clientId' => $_SERVER['DISCORD_CLIENT_ID'],
             'clientSecret' => $_SERVER['DISCORD_CLIENT_SECRET'],
-            'redirectUri' => 'http://localhost:8000/profile'
+            'redirectUri' => $_SERVER['DISCORD_REDIRECT_URI'] // UrlGeneratorInterface::ABSOLUTE_URL
         ]);
         $authUrl = $provider->getAuthorizationUrl([
             'scope' => ['identify']

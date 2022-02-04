@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 class ServicesDiscord
     /**
      * @param string $code
@@ -15,7 +17,7 @@ class ServicesDiscord
             'client_id' => $_SERVER['DISCORD_CLIENT_ID'],
             'client_secret' => $_SERVER['DISCORD_CLIENT_SECRET'],
             'code' => $code,
-            'redirect_uri' => $_SERVER['DISCORD_REDIRECT_URI'],
+            'redirect_uri' => UrlGeneratorInterface::ABSOLUTE_URL.'/profile',
             'grant_type' => 'authorization_code'
         );
 
@@ -93,7 +95,7 @@ class ServicesDiscord
             'client_id' => $_SERVER['DISCORD_CLIENT_ID'],
             'client_secret' => $_SERVER['DISCORD_CLIENT_SECRET'],
             'code' => $code,
-            'redirect_uri' => $_SERVER['DISCORD_REDIRECT_URI'],
+            'redirect_uri' => UrlGeneratorInterface::ABSOLUTE_URL . '/profile',
             'grant_type' => 'authorization_code'
         );
         $client = HttpClient::create();
