@@ -20,10 +20,14 @@
         {% endif %}
 
         <td scope="row">{{ user.fail }}</td>
-        {% if user.lastAttempt is not defined %}
+        {% if user.lastAttempt is null %}
             <td scope="row">Pas d'essais</td>
+        {% else %}
+            <td scope="row">
+                <a href="{{ path('admin_reset_timer', {'user' : user.id}) }}" onclick="return confirm('Voulez-vous réinitialiser son timer ?')">{{ user.lastAttempt|date("d/m/Y h:i") }}</a>
+            </td>
         {% endif %}
-        <td scope="row">{{ user.lastAttempt|date("d/m/Y/h:m:s") }}</td>
+
         <td> {{ user.discordId }}</td>
         <td><a href="discord://discord.com/users/{{ user.discordId }}">{{ user.usernameDiscord }}</a></td>
         <td scope="row"><a href="{{ path('admin_delete', {'id': user.id}) }}"

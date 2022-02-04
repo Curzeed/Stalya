@@ -49,7 +49,7 @@
                         <i class='bx bx-list-check nav_icon'></i>
                         <span class="nav_name">QCM</span>
                     </a>
-                {% if app.user.fail < 3%}
+                {% if app.user.fail < 3 and app.user.fail is defined %}
                     <a href="{{ path('session_list') }}"
                        class="nav_link {% if app.request.attributes.get('_route') starts with 'session' %}active{% endif %}"
                        id="session ">
@@ -64,18 +64,18 @@
                 </a>
                 {% if app.user %}
                     {% if "ROLE_ADMIN" in app.user.roles %}
-                        <a href="{{ path('admin') }}"
+                        <a href="{{ path('admin_manage_account',{'page' : 1}) }}"
                            class="nav_link {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %}"
                            id="administration">
                             <i class='bx bx-shield-alt-2 nav_icon'></i>
                             <span class="nav_name">Administration</span>
                         </a>
                         {% if app.request.attributes.get('_route') starts with 'admin' %}
-                            <a href="{{ path('question_new') }}" class="nav_link" id="informations">
+                            <a href="{{ path('admin_question_new') }}" class="nav_link" id="informations">
                                 <i class='bx bx-question-mark nav_icon'></i>
                                 <span class="nav_name">Créer une question</span>
                             </a>
-                            <a href="{{ path('question_index') }}" class="nav_link nav_admin" id="informations">
+                            <a href="{{ path('admin_question_index') }}" class="nav_link nav_admin" id="informations">
                                 <i class='bx bx-book-open nav_icon'></i>
                                 <span class="nav_name">Liste des questions</span>
                             </a>

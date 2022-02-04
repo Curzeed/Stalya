@@ -2,27 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
-use Symfony\UX\Chartjs\Model\Chart;
-use Knp\Component\Pager\PaginatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/administration')]
 class AdminController extends AbstractController
 {
-    #[Route('/', name: 'admin')]
-    public function index(ChartBuilderInterface $chartBuilder, UserRepository $ur): Response{
-
-        return $this->render('admin/index.html.twig');
-    }
-
     /**
      * @Route ("/manage_account/{page}", name="admin_manage_account")
      */
@@ -64,7 +55,7 @@ class AdminController extends AbstractController
         $user = $ur->find(['id'=>$id]);
         $em->remove($user);
         $em->flush();
-        return $this->redirectToRoute('main_admin');
+        return $this->redirectToRoute('admin_manage_account');
     }
 
     /**
@@ -78,7 +69,7 @@ class AdminController extends AbstractController
             $user->setRoles(["ROLE_USER"]);
         }
         $em->flush();
-        return $this->redirectToRoute('main_admin');
+        return $this->redirectToRoute('admin_manage_account');
     }
 
     /**
@@ -90,5 +81,13 @@ class AdminController extends AbstractController
         return $this->render('admin/_users_tab.html.twig', [
             'users' => $users
         ]);
+    }
+    /**
+     * @Route ("/amdin/reset/timer/{user}", name="admin_reset_timer")
+     */
+    public function resetTimer (User $user, EntityManagerInterface $em){
+        $user->setLastAttempt(null);
+        $em->flush();
+        return $this->redirectToRoute('admin_manage_account');
     }
 }

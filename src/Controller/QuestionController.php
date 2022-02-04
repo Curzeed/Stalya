@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/question')]
+#[Route('/admin/question')]
 #[IsGranted('ROLE_ADMIN')]
 class QuestionController extends AbstractController
 {
-    #[Route('/', name: 'question_index', methods: ['GET'])]
+    #[Route('/', name: 'admin_question_index', methods: ['GET'])]
     public function index(QuestionRepository $questionRepository): Response
     {
         return $this->render('question/index.html.twig', [
@@ -25,7 +25,7 @@ class QuestionController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'question_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'admin_question_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $question = new Question();
