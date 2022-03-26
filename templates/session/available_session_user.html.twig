@@ -13,8 +13,11 @@
     {% if app.user.discordId %}
         <div class="row">
             {% for session in sessions %}
+                {% if session.date >  %}
+                    
+                {% endif %}
                 <div class="card col-6" style="width: 18rem;margin-right: 20px;">
-                    <img class="card-img-top" src="https://dummyimage.com/400X220/000000/fff.png" alt="Card image cap">
+                    <img class="card-img-top" src="{{ asset('assets/img/session_img.png') }}" alt="Card image cap">
                     <div class="card-body ">
                         <h5 class="card-title">Session : </h5>
                         <p class="card-text">Session disponible

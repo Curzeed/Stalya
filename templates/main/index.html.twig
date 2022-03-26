@@ -5,6 +5,7 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/styleMain.css') }}">
 {% endblock %}
+
 {% block body %}
 <body id="body-pd">
 
@@ -14,11 +15,11 @@
         {% if app.user.discordId %}
             <div class="header_img"><img
                         src="https://cdn.discordapp.com/avatars/{{ app.user.discordId }}/{{ app.user.imgDiscord }}.gif"
-                        alt=""></div>
+                        alt="">
+            </div>
         {% else %}
             <div class="header_img nav_logo_stalya"><img src="{{ asset('assets/img/stalya.png') }}" alt="profile_image">
             </div>
-
         {% endif %}
     {% else %}
         <div class="header_img"><a href=""></a></div>

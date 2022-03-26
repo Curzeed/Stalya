@@ -10,3 +10,6 @@
     font-weight: bold;
     color: black !important;
 }
+.table-responsive{
+    overflow: hidden !important;
+}

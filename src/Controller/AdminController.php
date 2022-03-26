@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
+     * @IsGranted ("ROLE_ADMIN") or ("ROLE_MOD")
      * @Route ("/manage_account/{page}", name="admin_manage_account")
      */
     public function account (Request $request,UserRepository $ur, $page = 1) {
@@ -59,16 +60,21 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @IsGranted ("ROLE_ADMIN")
      * @Route ("/manage_account/upgrade/{id}" , name="admin_upgrade")
      */
-    public function upgradeAccount($id, UserRepository $ur, EntityManagerInterface $em){
-        $user = $ur->find(['id'=>$id]);
-        if(in_array("ROLE_ADMIN",$user->getRoles())){
-            $user->setRoles(["ROLE_ADMIN"]);
-        }else{
-            $user->setRoles(["ROLE_USER"]);
+    public function upgradeAccount($id, UserRepository $ur, EntityManagerInterface $em, Request $request){
+        if($request->getMethod() == 'POST'){
+            $user = $ur->find(['id'=> $id]);
+            $rank = $request->get('roles');
+            switch ($rank){
+                case 'user' : $user->setRoles(['ROLE_USER']); break;
+                case 'mod' : $user->setRoles(['ROLE_MOD']); break;
+                case 'admin' : $user->setRoles(['ROLE_ADMIN']); break;
+                default : $this->addFlash('error',"Une erreur s'est produite, merci de contacter un développeur pour résoudre ce problème");
+            }
+            $em->flush();
         }
-        $em->flush();
         return $this->redirectToRoute('admin_manage_account');
     }
 
@@ -90,4 +96,5 @@ class AdminController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('admin_manage_account');
     }
+
 }

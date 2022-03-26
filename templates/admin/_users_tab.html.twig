@@ -1,25 +1,33 @@
 {% set i = 0 %}
 {% for user in users %}
     <tr>
+        <!--  ----------- Username ----------- -->
         <td scope="row">{{ user.username }}</td>
+        <!--  ----------- Modal infos ----------- -->
         <td scope="row"><a type="button" class="" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ i }}">
                 {{ user.email }}
             </a></td>
-
-        {% if user.roles[0] == 'ROLE_ADMIN' %}
-            <td scope="row"><i class="fas fa-user-shield"></i></td>
+        <!--  ----------- Role ----------- -->
+        {% if "ROLE_ADMIN" in user.roles %}
+            <td scope="row" title="Administrateur"><i class="fas fa-user-shield"></i></td>
+        {% elseif "ROLE_MOD" in user.roles %}
+            <td scope="row" title="Modérateur"><i class="fas fa-user-cog"></i></td>
         {% else %}
-            <td scope="row"><i class="fas fa-user"></i></td>
-        {% endif %}
+            <td scope="row" title="Utilisateur"><i class="fas fa-user"></i></td>
 
+        {% endif %}
+        <!--  ----------- Birth Date ----------- -->
         <td scope="row">{{ user.birthDate|date("d/m/Y") }}</td>
+
+        <!--  ----------- E-mail verify ----------- -->
         {% if user.verified == true %}
             <td scope="row"><i class="fas fa-check"></i></td>
         {% else %}
             <td scope="row"><i class="fas fa-times"></i></td>
         {% endif %}
-
+        <!--  ----------- Count of fails ----------- -->
         <td scope="row">{{ user.fail }}</td>
+        <!--  ----------- Last attempt to QCM ----------- -->
         {% if user.lastAttempt is null %}
             <td scope="row">Pas d'essais</td>
         {% else %}
@@ -27,23 +35,31 @@
                 <a href="{{ path('admin_reset_timer', {'user' : user.id}) }}" onclick="return confirm('Voulez-vous réinitialiser son timer ?')">{{ user.lastAttempt|date("d/m/Y h:i") }}</a>
             </td>
         {% endif %}
-
+        <!--  ----------- Discord ID ----------- -->
         <td> {{ user.discordId }}</td>
+        <!--  ----------- Tag Discord ----------- -->
         <td><a href="discord://discord.com/users/{{ user.discordId }}">{{ user.usernameDiscord }}</a></td>
+        <!--  ----------- Delete user ----------- -->
         <td scope="row"><a href="{{ path('admin_delete', {'id': user.id}) }}"
                            onclick="return confirm('Êtes vous sûr de supprimer cet utilisateur ?')"><i
                         class="fas fa-trash-alt"></i></a></td>
-        {% if user.roles[0] == 'ROLE_ADMIN' %}
-            <td scope="row"><a href="{{ path('admin_upgrade', {'id' : user.id}) }}"
-                               onclick="return confirm('Êtes vous sûr de passer cet administrateur en utilisateur ?')"><i
-                            class="fas fa-user-minus"></i></a></td>
-        {% else %}
-            <td scope="row"><a href="{{ path('admin_upgrade', {'id' : user.id}) }}"
-                               onclick="return confirm('Êtes vous sûr de passer cet utilisateur administrateur ?')"><i
-                            class="fas fa-user-plus"></i></a></td>
-        {% endif %}
-    </tr>
 
+        <!--  ----------- Roles Management ----------- -->
+        {% if "ROLE_ADMIN" in app.user.roles %}
+            <td scope="row">
+                <form action="{{ path('admin_upgrade',{'id' : user.id }) }}" method="POST">
+                    <select name="roles" id="role_select" onchange="confirm('Êtes-vous sûr de modifier le rôle de cet utilisateur ?')? submit() : reset();">
+                        <option value="">Séléctionnez le rôle </option>
+                        <option value="user">Utilisateur</option>
+                        <option value="mod">Modérateur</option>
+                        <option value="admin">Administrateur</option>
+                    </select>
+                </form>
+            </td>
+        {% endif %}
+
+    </tr>
+    <!--  ----------- Modal info (next)  ----------- -->
     <div class="modal fade" id="staticBackdrop{{ i }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{ i }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -76,6 +92,7 @@
             </div>
         </div>
     </div>
+    <!--  ----------- Incrementation to have multiple modals ----------- -->
     {% set i = i + 1 %}
 {% else %}
     <tr>

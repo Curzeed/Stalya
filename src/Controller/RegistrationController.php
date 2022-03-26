@@ -50,7 +50,7 @@ class RegistrationController extends AbstractController
                 $url = $this->generateUrl("validate_email",[
                     'token' => $token,
                     'email' => $user->getEmail()
-                ], UrlGeneratorInterface::ABSOLUTE_URL);
+                ], UrlGeneratorInterface::ABSOLUTE_URL . '/profile');
                 $email = (new Email())
                         ->from('test@test.test')
                         ->to($user->getEmail())
