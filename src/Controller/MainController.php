@@ -36,8 +36,11 @@ class MainController extends AbstractController
      */
     public function signUpSession(Session $session, EntityManagerInterface $em) :  Response{
         $user = $this->getUser();
-        if(!$user->canSignupToSession()) {
-            $this->addFlash('warning', 'Vous avez fait trop d\'erreurs au qcm vous n\'avez pas accès aux sessions ! ');
+        if($user->getFail() == null) {
+            $this->addFlash('warning', 'Vous n\'avez pas répondu au QCM ! ');
+            return $this->redirectToRoute('session_list');
+        }if($user->getFail() > 3){
+            $this->addFlash('warning', 'Vous avez fait trop d\'erreurs');
             return $this->redirectToRoute('session_list');
         }
         $session->addUser($user);
@@ -109,5 +112,17 @@ class MainController extends AbstractController
         return $this->render('session/admitUser.html.twig', [
             'user' => $user
         ]);
+    }
+    /**
+     * @Route("/session/sendBackground", name="session_sendBackground")
+     */
+    public function sendBackground(Request $request,EntityManagerInterface $em){
+        $user = $this->getUser();
+        if($request->getMethod() == "POST"){
+            if(str_starts_with($request->get('background_url'),'https://docs.google.com/'))
+            $user->setBackgroundUrl($request->get('background_url'));
+            $em->flush();
+        }
+        return $this->redirectToRoute('session_list');
     }
 }

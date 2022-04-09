@@ -119,6 +119,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $Admis;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $background_url;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
@@ -432,6 +437,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAdmis(?bool $Admis): self
     {
         $this->Admis = $Admis;
+
+        return $this;
+    }
+
+    public function getBackgroundUrl(): ?string
+    {
+        return $this->background_url;
+    }
+
+    public function setBackgroundUrl(?string $background_url): self
+    {
+        $this->background_url = $background_url;
 
         return $this;
     }

@@ -6,16 +6,19 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_ADMIN')]
+/**
+ * @Security("is_granted('ROLE_MOD') or is_granted('ROLE_ADMIN')")
+ */
 #[Route('/administration')]
 class AdminController extends AbstractController
 {
     /**
-     * @IsGranted ("ROLE_ADMIN") or ("ROLE_MOD")
+     * @Security("is_granted('ROLE_MOD') or is_granted('ROLE_ADMIN')")
      * @Route ("/manage_account/{page}", name="admin_manage_account")
      */
     public function account (Request $request,UserRepository $ur, $page = 1) {
@@ -89,6 +92,7 @@ class AdminController extends AbstractController
         ]);
     }
     /**
+     * @Security("is_granted('ROLE_ADMIN')")
      * @Route ("/amdin/reset/timer/{user}", name="admin_reset_timer")
      */
     public function resetTimer (User $user, EntityManagerInterface $em){
@@ -96,5 +100,4 @@ class AdminController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('admin_manage_account');
     }
-
 }

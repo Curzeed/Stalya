@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Session;
+use App\Entity\User;
+use App\Services\ServicesDiscord;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use function Symfony\Component\Translation\t;
 
 /**
  * @method Session|null find($id, $lockMode = null, $lockVersion = null)

@@ -13,21 +13,27 @@
     {% if app.user.discordId %}
         <div class="row">
             {% for session in sessions %}
-                {% if session.date >  %}
-                    
-                {% endif %}
+{#                {% if session.date >  %}#}
+{#                    #}
+{#                {% endif %}#}
                 <div class="card col-6" style="width: 18rem;margin-right: 20px;">
                     <img class="card-img-top" src="{{ asset('assets/img/session_img.png') }}" alt="Card image cap">
                     <div class="card-body ">
                         <h5 class="card-title">Session : </h5>
-                        <p class="card-text">Session disponible
-                            à {{ session.date|date('d M y H:i:s', 'Europe/Paris') }}</p>
+                        <p class="card-text">Session disponible le <br> {{ session.date|date('d/m/Y à H:i' , 'Europe/Paris') }}h </p>
                         {% if session == app.user.session %}
                             <a href="{{ path('session_revoke', {'id' : session.id}) }}" class="btn btn-primary"> Se
                                 désister </a>
                         {% else %}
-                            <a href="{{ path('session_inscription', {'id' : session.id}) }}" class="btn btn-primary">S'inscrire
-                                ({{ session.user|length ~ '/' ~  session.nbplace }} inscrits)</a>
+                            {% if app.user.backgroundUrl %}
+                                <a  href="{{ path('session_inscription', {'id' : session.id}) }}" class="btn btn-primary " id="btn_inscription">S'inscrire
+                                    ({{ session.user|length ~ '/' ~  session.nbplace }} inscrits)
+                                </a>
+                            {% else %}
+                                <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Envoyer son background
+                                </a>
+                            {% endif %}
 
                         {% endif %}
                         {% if "ROLE_ADMIN" in app.user.roles %}
@@ -39,10 +45,41 @@
                 </div>
             {% endfor %}
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Envoyer son background</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ path('session_sendBackground') }}" method="post">
+                    <div class="modal-body">
+                        <p>Avant de pouvoir s'inscrire à une session, il vous faut envoyer votre background
+                        en format URL Google Document.
+                            <a href="https://www.google.fr/intl/fr/docs/about/"><i>Cliquez ici </i></a>
+                            pour faire un google doc
+                        </p>
+                            <label for="input_background_url" >URL : </label>
+                            <input type="text" id="input_background_url" placeholder="https://docs.google.com/document/....." style="width: 400px" onchange="verify()" name="background_url">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="btn_modal_close" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary" id="btn_modal_send">Envoyer</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
     {% else %}
         <div>
             Vous devez lier votre compte discord pour vous inscrire à une session !
             <a href="{{ path('user_profile_discord_link') }}">Lier son compte discord ! </a>
         </div>
     {% endif %}
+    <script src="{{ asset('assets/js/script_session_list.js') }}"></script>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}
