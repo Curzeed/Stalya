@@ -9,10 +9,16 @@
 {% block body %}
 <body id="body-pd">
 
-<header class="header" id="header">
+<header class="header d-flex" id="header">
     <div class="header_toggle"><i class='bx bx-menu' id="header-toggle"></i></div>
+    <div class="header_title d-flex ">
+        <h2><b>{% block sectionTitle %}
+
+        {% endblock %}</b></h2>
+    </div>
     {% if app.user %}
         {% if app.user.discordId %}
+
             <div class="header_img"><img
                         src="https://cdn.discordapp.com/avatars/{{ app.user.discordId }}/{{ app.user.imgDiscord }}.gif"
                         alt="">
@@ -66,29 +72,37 @@
                 {% if app.user %}
                     {% if "ROLE_ADMIN" in app.user.roles %}
                         <a href="{{ path('admin_manage_account',{'page' : 1}) }}"
-                           class="nav_link {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %}"
+                           class="nav_link {% if app.request.attributes.get('_route') starts with 'admin' %}active{% endif %} dropdown dropdown-toggle" data-bs-toggle="dropdown"
                            id="administration">
                             <i class='bx bx-shield-alt-2 nav_icon'></i>
                             <span class="nav_name">Administration</span>
                         </a>
-                        {% if app.request.attributes.get('_route') starts with 'admin' %}
-                            <a href="{{ path('admin_question_new') }}" class="nav_link" id="informations">
-                                <i class='bx bx-question-mark nav_icon'></i>
-                                <span class="nav_name">Créer une question</span>
-                            </a>
-                            <a href="{{ path('admin_question_index') }}" class="nav_link nav_admin" id="informations">
-                                <i class='bx bx-book-open nav_icon'></i>
-                                <span class="nav_name">Liste des questions</span>
-                            </a>
-                            <a href="{{ path('admin_manage_account') }}" class="nav_link nav_admin" id="informations">
-                                <i class='bx bxs-user nav_icon'></i>
-                                <span class="nav_name">Gérer les utilisateurs</span>
-                            </a>
-                            <a href="{{ path('session_index') }}" class="nav_link nav_admin" id="informations">
-                                <i class='bx bxs-group nav_icon'></i>
-                                <span class="nav_name">Créer une session</span>
-                            </a>
-                        {% endif %}
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li class="dropdown-item">
+                                    <a href="{{ path('admin_question_new') }}"id="informations" class="nav-item">
+                                        <i class='bx bx-question-mark nav_icon'></i>
+                                        <span class="nav_name">Créer une question</span>
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a href="{{ path('admin_question_index') }}" id="informations">
+                                        <i class='bx bx-book-open nav_icon'></i>
+                                        <span class="nav_name">Liste des questions</span>
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a href="{{ path('admin_manage_account') }}" id="informations">
+                                        <i class='bx bxs-user nav_icon'></i>
+                                        <span class="nav_name">Gérer les utilisateurs</span>
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a href="{{ path('session_index') }}" id="informations">
+                                        <i class='bx bxs-group nav_icon'></i>
+                                        <span class="nav_name">Créer une session</span>
+                                    </a>
+                                </li>
+                            </ul>
                     {% endif %}
                 {% endif %}
             </div>

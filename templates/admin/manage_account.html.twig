@@ -10,13 +10,16 @@ Gestion des Comptes
 {% block javascripts %}
     {{ parent() }}
 {% endblock %}
+
+{% block sectionTitle %}
+    Gestion des utilisateurs
+{% endblock %}
+
 {% block content %}
     <div class="container">
-        <h1 class="text-center">Gestion de compte </h1>
         <form action="{{ path('admin_manage_account' ,{'page' : 1}) }}" method="get">
-            <div class="nbUserPage">
-                <h5>Afficher un nombre d'utilisateurs par page : </h5>
-                <select name="nbPage" id="nbPage_users" onchange="submit()">
+                <label for="nbPage_users" class="mt-5">Afficher un nombre d'utilisateurs par page : </label>
+                <select name="nbPage" id="nbPage_users" onchange="submit()" class="py-1 px-1">
                     <option value="">Veuillez saisir le montant :</option>
                     <option value="10">10</option>
                     <option value="20">20</option>
@@ -24,25 +27,25 @@ Gestion des Comptes
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
-            </div>
         </form>
+        <br>
         <label for="research_input">Recherche : </label>
         <input type="text" name="research" id="research_input" onkeyup="myFunction()" placeholder="Recherche par pseudo">
-        <div class="table-responsive">
-            <table class="table table-light table-striped me-md-3" id="myTable">
+        <div class="table-responsive py-4">
+            <table class="table table-light table-striped table-bordered table-sm" id="myTable">
                 <thead class="table-dark">
                 <tr>
-                    <th scope="col">Pseudo</th>
-                    <th scope="col">E-mail</th>
-                    <th scope="col">Rôle</th>
-                    <th scope="col">Date de Naissance</th>
-                    <th scope="col">Vérifié</th>
-                    <th scope="col">Erreurs</th>
-                    <th scope="col">Dernière tentative</th>
-                    <th scope="col">IdDiscord</th>
-                    <th scope="col">Discord</th>
-                    <th scope="col">Supprimer</th>
-                    <th scope="col">Upgrade</th>
+                    <th scope="col" class="text-center py-3">Pseudo</th>
+                    <th scope="col" class="text-center py-3">E-mail</th>
+                    <th scope="col" class="text-center py-3">Rôle</th>
+                    <th scope="col" class="text-center py-3">Date de Naissance</th>
+                    <th scope="col" class="text-center py-3">Vérifié</th>
+                    <th scope="col" class="text-center py-3">Erreurs</th>
+                    <th scope="col" class="text-center py-3">Dernière tentative</th>
+                    <th scope="col" class="text-center py-3">IdDiscord</th>
+                    <th scope="col" class="text-center py-3">Discord</th>
+                    <th scope="col" class="text-center py-3">Supprimer</th>
+                    <th scope="col" class="text-center py-3">Upgrade</th>
                 </tr>
                 </thead>
                 <tbody id="users_tab">

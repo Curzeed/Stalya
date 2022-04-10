@@ -1,54 +1,54 @@
 {% set i = 0 %}
 {% for user in users %}
-    <tr>
+    <tr >
         <!--  ----------- Username ----------- -->
-        <td scope="row">{{ user.username }}</td>
+        <td scope="row" class="text-center py-4">{{ user.username }}</td>
         <!--  ----------- Modal infos ----------- -->
-        <td scope="row"><a type="button" class="" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ i }}">
+        <td scope="row" class="py-4"><a class="" type="button"  data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ i }}">
                 {{ user.email }}
             </a></td>
         <!--  ----------- Role ----------- -->
         {% if "ROLE_ADMIN" in user.roles %}
-            <td scope="row" title="Administrateur"><i class="fas fa-user-shield"></i></td>
+            <td scope="row" title="Administrateur" class="text-center py-4"><i class="fas fa-user-shield"></i></td>
         {% elseif "ROLE_MOD" in user.roles %}
-            <td scope="row" title="Modérateur"><i class="fas fa-user-cog"></i></td>
+            <td scope="row" title="Modérateur" class="text-center py-4"><i class="fas fa-user-cog"></i></td>
         {% else %}
-            <td scope="row" title="Utilisateur"><i class="fas fa-user"></i></td>
+            <td scope="row" title="Utilisateur" class="text-center py-4"><i class="fas fa-user"></i></td>
 
         {% endif %}
         <!--  ----------- Birth Date ----------- -->
-        <td scope="row">{{ user.birthDate|date("d/m/Y") }}</td>
+        <td scope="row" class="text-center py-4">{{ user.birthDate|date("d/m/Y") }}</td>
 
         <!--  ----------- E-mail verify ----------- -->
         {% if user.verified == true %}
-            <td scope="row"><i class="fas fa-check"></i></td>
+            <td scope="row" class="text-center py-4"><i class="fas fa-check"></i></td>
         {% else %}
-            <td scope="row"><i class="fas fa-times"></i></td>
+            <td scope="row" class="text-center py-4"><i class="fas fa-times"></i></td>
         {% endif %}
         <!--  ----------- Count of fails ----------- -->
-        <td scope="row">{{ user.fail }}</td>
+        <td scope="row" class="text-center py-4">{{ user.fail }}</td>
         <!--  ----------- Last attempt to QCM ----------- -->
         {% if user.lastAttempt is null %}
-            <td scope="row">Pas d'essais</td>
+            <td scope="row" class="text-center py-4">Pas d'essais</td>
         {% else %}
-            <td scope="row">
+            <td scope="row" class="text-center py-4">
                 <a href="{{ path('admin_reset_timer', {'user' : user.id}) }}" onclick="return confirm('Voulez-vous réinitialiser son timer ?')">{{ user.lastAttempt|date("d/m/Y h:i") }}</a>
             </td>
         {% endif %}
         <!--  ----------- Discord ID ----------- -->
-        <td> {{ user.discordId }}</td>
+        <td class="text-center py-4"> {{ user.discordId }}</td>
         <!--  ----------- Tag Discord ----------- -->
-        <td><a href="discord://discord.com/users/{{ user.discordId }}">{{ user.usernameDiscord }}</a></td>
+        <td class="text-center py-4"><a href="discord://discord.com/users/{{ user.discordId }}">{{ user.usernameDiscord }}</a></td>
         <!--  ----------- Delete user ----------- -->
-        <td scope="row"><a href="{{ path('admin_delete', {'id': user.id}) }}"
-                           onclick="return confirm('Êtes vous sûr de supprimer cet utilisateur ?')"><i
-                        class="fas fa-trash-alt"></i></a></td>
+        <td scope="row" class="text-center py-4"><a href="{{ path('admin_delete', {'id': user.id}) }}"
+                           onclick="return confirm('Êtes vous sûr de supprimer cet utilisateur ?')">
+                            <i class="fas fa-trash-alt trash_anim"></i></a></td>
 
         <!--  ----------- Roles Management ----------- -->
         {% if "ROLE_ADMIN" in app.user.roles %}
-            <td scope="row">
+            <td scope="row" class="text-center py-4">
                 <form action="{{ path('admin_upgrade',{'id' : user.id }) }}" method="POST">
-                    <select name="roles" id="role_select" onchange="confirm('Êtes-vous sûr de modifier le rôle de cet utilisateur ?')? submit() : reset();">
+                    <select class="py-1 px-1" name="roles" id="role_select" onchange="confirm('Êtes-vous sûr de modifier le rôle de cet utilisateur ?')? submit() : reset();">
                         <option value="">Séléctionnez le rôle </option>
                         <option value="user">Utilisateur</option>
                         <option value="mod">Modérateur</option>
@@ -68,7 +68,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <label for="idUser">Id :</label><span id="idUser">{{ user.id }}</span><br>
+                    <label for="idUser">Id :</label><span id="idUser" >{{ user.id }}</span><br>
                     <label for="username">Pseudo :</label><span id="username">{{ user.username }}</span><br>
                     <label for="emailUser">E-Mail :</label><span id="emailUser">{{ user.email }}</span><br>
                     <label for="birthDate">Date de naissance :</label><span id="birthDate">{{ user.birthDate|date("d/m/Y")}}</span><br>
