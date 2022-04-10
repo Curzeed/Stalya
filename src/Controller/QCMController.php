@@ -31,13 +31,13 @@ class QCMController extends AbstractController
         $atmDate = new DateTime('now');
         $questions = $qr->findbyRandomInTwenty();
 
-        if ($user->canParticipate() === false || $user->getnbTry() >= 3) {
-            $user->setnbTry(0);
-            $user->setFail(21);
-            $user->setLastAttempt($atmDate);
-            $em->flush();
-            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-        }
+//        if ($user->canParticipate() === false || $user->getnbTry() >= 3) {
+//            $user->setnbTry(0);
+//            $user->setFail(21);
+//            $user->setLastAttempt($atmDate);
+//            $em->flush();
+//            return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+//        }
         $user->setnbTry($user->getnbTry()+1);
         $em->flush();
         // Récupération du formulaire

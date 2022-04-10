@@ -4,13 +4,10 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/styleIndexQcm.css') }}">
 {% endblock %}
-
+{% block sectionTitle %}QCM{% endblock %}
 {% block content %}
 
     <div class="container fullPage">
-        <div class="container">
-            <h1 class="text-center mt-2"> QCM :</h1>
-        </div>
         <div class="container fullPage">
             <div class="row">
                 <p class="text-center mt-4" id="description_qcm"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
@@ -22,8 +19,8 @@
             </div>
             <div class="row justify-content-center">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" id="btn_launch_qcm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Commencer le qcm
+                <button type="button" class="btn btn-primary btn-lg" id="btn_launch_qcm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Commencer le QCM
                 </button>
                 <!-- Modal -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
